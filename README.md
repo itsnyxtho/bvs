@@ -1,2 +1,2 @@
 # bvs
-Scripts for BVS website.
+Scripts for the BVS website.
