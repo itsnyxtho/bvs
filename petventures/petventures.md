@@ -21,107 +21,114 @@
 
 ## Areas
 
-| Training Area: Ramenshop               |            |              |                 |
-| -------------------------------------- | ---------- | ------------ | --------------- |
-| **Specialty**                          | `Sniffing` |              |                 |
-| **Base Progress Time**                 | 40 minutes |              |                 |
-| **Orange-Level Items (Common Finds)**  |            |              |                 |
-| *Item*                                 |            |              | *Bonus Minutes* |
-| Empty Bowl                             |            |              | +1 min          |
-| Used Chopsticks                        |            |              | +1 min          |
-| Balled-Up Napkin                       |            |              | +1 min          |
-| Old Receipt                            |            |              | +1 min          |
-| Soy Sauce Cap                          |            |              | +1 min          |
-| Lost (Found!) Cat Poster               |            |              | +2 min          |
-| **Gray-Level Items (Rare Finds)**      |            |              |                 |
-| *Item*                                 |            |              | *Bonus Minutes* |
-| Coupon                                 |            |              | +2 min          |
-| Straw Wrapper                          |            |              | +2 min          |
-| Long Spoon                             |            |              | +2 min          |
-| **Gold-Level Items (Skill Finds)**     |            |              |                 |
-| *Item*                                 |            | *Skill*      | *Bonus Minutes* |
-| Wrapped Order                          |            | `Nomming`    | +3 min          |
-| Fresh Pickle                           |            | `Sniffing`   | +3 min          |
-| Super-Long Noodle                      |            | `Flops`      | +3 min          |
-| Cell Phone                             |            | `Strongness` | +5 min          |
-| **Amazing-Level Items (Friend Finds)** |            |              |                 |
-| *Item*                                 | *Friend*   |              | *Bonus Minutes* |
-| Cybernetic Ramen                       | **Baby**   |              | +10 min         |
+| Training Area: Ramenshop               |                 |              |
+| -------------------------------------- | --------------- | ------------ |
+| **Specialty**                          | `Sniffing`      |              |
+| **Base Progress Time**                 | `40 minutes`    |              |
+| **Orange-Level Items (Common Finds)**  |                 |              |
+| *Item*                                 | *Bonus Minutes* |              |
+| Empty Bowl                             | +1 min          |              |
+| Used Chopsticks                        | +1 min          |              |
+| Balled-Up Napkin                       | +1 min          |              |
+| Old Receipt                            | +1 min          |              |
+| Soy Sauce Cap                          | +1 min          |              |
+| Lost (Found!) Cat Poster               | +2 min          |              |
+| **Gray-Level Items (Rare Finds)**      |                 |              |
+| *Item*                                 | *Bonus Minutes* |              |
+| Coupon                                 | +2 min          |              |
+| Straw Wrapper                          | +2 min          |              |
+| Long Spoon                             | +2 min          |              |
+| **Gold-Level Items (Skill Finds)**     |                 |              |
+| *Item*                                 | *Bonus Minutes* | *Skill*      |
+| Wrapped Order                          | +3 min          | `Nomming`    |
+| Fresh Pickle                           | +3 min          | `Sniffing`   |
+| Super-Long Noodle                      | +3 min          | `Flops`      |
+| Cell Phone                             | +5 min          | `Strongness` |
+| **Amazing-Level Items (Friend Finds)** |                 |              |
+| *Item*                                 | *Bonus Minutes* | *Friend*     |
+| Cybernetic Ramen                       | +10 min         | **Baby**     |
 
-| Training Area: Training Grounds        |            |         |                 |
-| -------------------------------------- | ---------- | ------- | --------------- |
-| **Specialty**                          | `Bopping`  |         |                 |
-| **Base Progress Time**                 | 60 minutes |         |                 |
-| **Orange-Level Items (Common Finds)**  |            |         |                 |
-| *Item*                                 |            |         | *Bonus Minutes* |
-| Chewed Kunai                           |            |         | +1 min          |
-| Dud Smokebomb                          |            |         | +2 min          |
-| Training Helmet                        |            |         | +2 min          |
-| Misplaced Sock                         |            |         | +1 min          |
-| Jump Rope                              |            |         | +2 min          |
-| Crumpled Soda Can                      |            |         | +1 min          |
-| **Gray-Level Items (Rare Finds)**      |            |         |                 |
-| *Item*                                 |            |         | *Bonus Minutes* |
-| Clipboard                              |            |         | +3 min          |
-| Practice Target                        |            |         | +3 min          |
-| Third-Place Flag                       |            |         | +3 min          |
-| **Gold-Level Items (Skill Finds)**     |            |         |                 |
-| *Item*                                 |            | *Skill* | *Bonus Minutes* |
-| Whistle                                |            | Fancy   | +7 min          |
-| Kata Instructions                      |            | Speedy  | +6 min          |
-| **Amazing-Level Items (Friend Finds)** |            |         |                 |
-| *Item*                                 | *Friend*   |         | *Bonus Minutes* |
-| Radio Frequency List                   | **Smokey** |         | +10 min         |
+--------------------------------------
 
-| Training Area: Genin Schoolyard        |             |               |                 |
-| -------------------------------------- | ----------- | ------------- | --------------- |
-| **Specialty**                          | `Fancy`     |               |                 |
-| **Base Progress Time**                 | 120 minutes |               |                 |
-| **Orange-Level Items (Common Finds)**  |             |               |                 |
-| *Item*                                 |             |               | *Bonus Minutes* |
-| Printed Handout                        |             |               | +1 min          |
-| Old Test                               |             |               | +2 min          |
-| Permission Slip                        |             |               | +3 min          |
-| Used Eraser                            |             |               | +2 min          |
-| Old Broom                              |             |               | +3 min          |
-| **Gray-Level Items (Rare Finds)**      |             |               |                 |
-| *Item*                                 |             |               | *Bonus Minutes* |
-| Gnawed Shoes                           |             |               | +3 min          |
-| Pencil Case                            |             |               | +4 min          |
-| Blackboard Eraser                      |             |               | +6 min          |
-| **Gold-Level Items (Skill Finds)**     |             |               |                 |
-| *Item*                                 |             | *Skill*       | *Bonus Minutes* |
-| Lunch Bag                              |             | `Sniffing`    | +8 min          |
-| Cheat Sheet                            |             | `Shenanigans` | +8 min          |
-| Love Letter                            |             | `Fancy`       | +25 min         |
-| **Amazing-Level Items (Friend Finds)** |             |               |                 |
-| *Item*                                 | *Friend*    |               | *Bonus Minutes* |
-| Boiler Room Key                        | **Tabby**   |               | +20 min         |
+| Training Area: Training Grounds        |                 |            |
+| -------------------------------------- | --------------- | ---------- |
+| **Specialty**                          | `Bopping`       |            |
+| **Base Progress Time**                 | `60 minutes`    |            |
+| **Orange-Level Items (Common Finds)**  |                 |            |
+| *Item*                                 | *Bonus Minutes* |            |
+| Chewed Kunai                           | +1 min          |            |
+| Dud Smokebomb                          | +2 min          |            |
+| Training Helmet                        | +2 min          |            |
+| Misplaced Sock                         | +1 min          |            |
+| Jump Rope                              | +2 min          |            |
+| Crumpled Soda Can                      | +1 min          |            |
+| **Gray-Level Items (Rare Finds)**      |                 |            |
+| *Item*                                 | *Bonus Minutes* |            |
+| Clipboard                              | +3 min          |            |
+| Practice Target                        | +3 min          |            |
+| Third-Place Flag                       | +3 min          |            |
+| **Gold-Level Items (Skill Finds)**     |                 |            |
+| *Item*                                 | *Bonus Minutes* | *Skill*    |
+| Whistle                                | +7 min          | `Fancy`    |
+| Kata Instructions                      | +6 min          | `Speedy`   |
+| **Amazing-Level Items (Friend Finds)** |                 |            |
+| *Item*                                 | *Bonus Minutes* | *Friend*   |
+| Radio Frequency List                   | +10 min         | **Smokey** |
 
-| Training Area: Storage Room            |             |              |                 |
-| -------------------------------------- | ----------- | ------------ | --------------- |
-| **Specialty**                          | `Flops`     |              |                 |
-| **Base Progress Time**                 | 120 minutes |              |                 |
-| **Orange-Level Items (Common Finds)**  |             |              |                 |
-| *Item*                                 |             |              | *Bonus Minutes* |
-| Deflated Ball                          |             |              | +1 min          |
-| Crumpled Uniform                       |             |              | +1 min          |
-| Wooden Pallet                          |             |              | +2 min          |
-| First-Aid Kit                          |             |              | +2 min          |
-| Long Rope                              |             |              | +3 min          |
-| **Gray-Level Items (Rare Finds)**      |             |              |                 |
-| *Item*                                 |             |              | *Bonus Minutes* |
-| Warning Sign                           |             |              | +3 min          |
-| Practice Mat                           |             |              | +5 min          |
-| Water Bottle                           |             |              | +4 min          |
-| **Gold-Level Items (Skill Finds)**     |             |              |                 |
-| *Item*                                 |             | *Skill*      | *Bonus Minutes* |
-| Building Plans                         |             | `Stealth`    | +5 min          |
-| Fire Extinguisher                      |             | `Strongness` | +6 min          |
-| **Amazing-Level Items (Friend Finds)** |             |              |                 |
-| *Item*                                 | *Friend*    |              | *Bonus Minutes* |
-| Mascot Costume                         | **Erwin**   |              | +10 min         |
+--------------------------------------
 
+| Training Area: Genin Schoolyard        |                 |               |
+| -------------------------------------- | --------------- | ------------- |
+| **Specialty**                          | `Fancy`         |               |
+| **Base Progress Time**                 | `120 minutes`   |               |
+| **Orange-Level Items (Common Finds)**  |                 |               |
+| *Item*                                 | *Bonus Minutes* |               |
+| Printed Handout                        | +1 min          |               |
+| Old Test                               | +2 min          |               |
+| Permission Slip                        | +3 min          |               |
+| Used Eraser                            | +2 min          |               |
+| Old Broom                              | +3 min          |               |
+| **Gray-Level Items (Rare Finds)**      |                 |               |
+| *Item*                                 | *Bonus Minutes* |               |
+| Gnawed Shoes                           | +3 min          |               |
+| Pencil Case                            | +4 min          |               |
+| Blackboard Eraser                      | +6 min          |               |
+| **Gold-Level Items (Skill Finds)**     |                 |               |
+| *Item*                                 | *Bonus Minutes* | *Skill*       |
+| Lunch Bag                              | +8 min          | `Sniffing`    |
+| Cheat Sheet                            | +8 min          | `Shenanigans` |
+| Love Letter                            | +25 min         | `Fancy`       |
+| **Amazing-Level Items (Friend Finds)** |                 |               |
+| *Item*                                 | *Bonus Minutes* | *Friend*      |
+| Boiler Room Key                        | +20 min         | **Tabby**     |
+
+--------------------------------------
+
+| Training Area: Storage Room            |                 |              |
+| -------------------------------------- | --------------- | ------------ |
+| **Specialty**                          | `Flops`         |              |
+| **Base Progress Time**                 | `120 minutes`   |              |
+| **Orange-Level Items (Common Finds)**  |                 |              |
+| *Item*                                 | *Bonus Minutes* |              |
+| Deflated Ball                          | +1 min          |              |
+| Crumpled Uniform                       | +1 min          |              |
+| Wooden Pallet                          | +2 min          |              |
+| First-Aid Kit                          | +2 min          |              |
+| Long Rope                              | +3 min          |              |
+| **Gray-Level Items (Rare Finds)**      |                 |              |
+| *Item*                                 | *Bonus Minutes* |              |
+| Warning Sign                           | +3 min          |              |
+| Practice Mat                           | +5 min          |              |
+| Water Bottle                           | +4 min          |              |
+| **Gold-Level Items (Skill Finds)**     |                 |              |
+| *Item*                                 | *Bonus Minutes* | *Skill*      |
+| Building Plans                         | +5 min          | `Stealth`    |
+| Fire Extinguisher                      | +6 min          | `Strongness` |
+| **Amazing-Level Items (Friend Finds)** |                 |              |
+| *Item*                                 | *Bonus Minutes* | *Friend*     |
+| Mascot Costume                         | +10 min         | **Erwin**    |
+
+--------------------------------------
 
 ## Adventure Pals
 
@@ -162,7 +169,6 @@
   | **Red Herring**     | ?         |
   | **1.1 Tailed Fox**  | ?         |
   | **Salty Dog**       | `Nomming` |
-
 
 # Information Helpers
   - Gauss
