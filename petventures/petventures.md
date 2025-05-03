@@ -4,6 +4,7 @@
   * [Areas](#areas)
   * [Adventure Pals](#adventure-pals)
   * [Pet Heroes](#pet-heroes)
+* [Information Helpers](#information-helpers)
 
 **URL**: https://animecubedgaming.com/billy/bvs/petventures.html
 
@@ -97,29 +98,29 @@
 | *Item*                                 | *Friend*    |               | *Bonus Minutes* |
 | Boiler Room Key                        | **Tabby**   |               | +20 min         |
 
-| Training Area: Storage Room            |             |               |                 |
-| -------------------------------------- | ----------- | ------------  | --------------- |
-| **Specialty**                          | `Flops`     |               |                 |
-| **Base Progress Time**                 | 120 minutes |               |                 |
-| **Orange-Level Items (Common Finds)**  |             |               |                 |
-| *Item*                                 |             |               | *Bonus Minutes* |
-| Deflated Ball                          |             |               | +1 min          |
-| Crumpled Uniform                       |             |               | +1 min          |
-| Wooden Pallet                          |             |               | +2 min          |
-| First-Aid Kit                          |             |               | +2 min          |
-| Long Rope                              |             |               | +3 min          |
-| **Gray-Level Items (Rare Finds)**      |             |               |                 |
-| *Item*                                 |             |               | *Bonus Minutes* |
-| Warning Sign                           |             |               | +3 min          |
-| Practice Mat                           |             |               | +5 min          |
-| Water Bottle                           |             |               | +4 min          |
-| **Gold-Level Items (Skill Finds)**     |             |               |                 |
-| *Item*                                 |             | *Skill*       | *Bonus Minutes* |
-| Building Plans                         |             | `Stealth`     | +5 min          |
-| Fire Extinguisher                      |             | `Strongness`  | +6 min          |
-| **Amazing-Level Items (Friend Finds)** |             |               |                 |
-| *Item*                                 | *Friend*    |               | *Bonus Minutes* |
-| Mascot Costume                         | **Erwin**   |               | +10 min         |
+| Training Area: Storage Room            |             |              |                 |
+| -------------------------------------- | ----------- | ------------ | --------------- |
+| **Specialty**                          | `Flops`     |              |                 |
+| **Base Progress Time**                 | 120 minutes |              |                 |
+| **Orange-Level Items (Common Finds)**  |             |              |                 |
+| *Item*                                 |             |              | *Bonus Minutes* |
+| Deflated Ball                          |             |              | +1 min          |
+| Crumpled Uniform                       |             |              | +1 min          |
+| Wooden Pallet                          |             |              | +2 min          |
+| First-Aid Kit                          |             |              | +2 min          |
+| Long Rope                              |             |              | +3 min          |
+| **Gray-Level Items (Rare Finds)**      |             |              |                 |
+| *Item*                                 |             |              | *Bonus Minutes* |
+| Warning Sign                           |             |              | +3 min          |
+| Practice Mat                           |             |              | +5 min          |
+| Water Bottle                           |             |              | +4 min          |
+| **Gold-Level Items (Skill Finds)**     |             |              |                 |
+| *Item*                                 |             | *Skill*      | *Bonus Minutes* |
+| Building Plans                         |             | `Stealth`    | +5 min          |
+| Fire Extinguisher                      |             | `Strongness` | +6 min          |
+| **Amazing-Level Items (Friend Finds)** |             |              |                 |
+| *Item*                                 | *Friend*    |              | *Bonus Minutes* |
+| Mascot Costume                         | **Erwin**   |              | +10 min         |
 
 
 ## Adventure Pals
@@ -161,3 +162,8 @@
   | **Red Herring**     | ?         |
   | **1.1 Tailed Fox**  | ?         |
   | **Salty Dog**       | `Nomming` |
+
+
+# Information Helpers
+  - Gauss
+  - itsnyxtho
