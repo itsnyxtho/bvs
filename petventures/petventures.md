@@ -167,7 +167,7 @@
   | **COURAGE WOLF**    | `Bopping`    |
   | **Blazing Phoenix** | `Speedy`     |
   | **Red Herring**     | `Flops`      |
-  | **1.1 Tailed Fox**  | `Ekeven`     |
+  | **1.1 Tailed Fox**  | `Eleven`     |
   | **Salty Dog**       | `Nomming`    |
 
 # Information Helpers
