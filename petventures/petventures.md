@@ -13,7 +13,7 @@
 - **Bonus Time**: *Bonus Time* is the currency of petventures. It is used to purchase *Adventure Pals*, increase item find chances of an adventure, and speed up progress of a an adventure.
 - **Friends Bonus**: A speed bonus that increases by 5% for each known *adventure pal*.
 - **Hero Bonus**: A speed bonus that increases by 10% for each level the leading *pet hero* has. The *pet hero* must be the leading pet in the adventure for the bonus.
-- **Pet Hero Ability**: The ability that they *pet hero* levels up on.
+- **Pet Hero Ability**: The effect of the *Ability* is that if it matches the area specialty then *Hero Bonus* is doubled.
 - [**Pet Heroes**](#pet-heroes): *Pet Heroes* are pets that are bought through the *Pets!* menu with *Pet Points*. They provide a bonus to *Petventures* when they are made the lead pet in an adventure. They also have an ability that they level up on. The *Pet Hero* must be the leading pet in the adventure. A *Pet Hero's* level in the *Pets!* menu does not affect and is not the same as the *Pet Hero's* level in the *Petventures* menu.
 - **Specialty**: An area's *specialty* is the skill that provides a *speed bonus* to the adventure's *progress timer*.
 - **Speed Bonus**: The *speed bonus* is the percentage faster the adventure will progress.
@@ -155,20 +155,20 @@
 
 ## Pet Heroes
 
-  | Pet Hero            | Specialty |
-  | ------------------- | --------- |
-  | **Ninja Kitty**     | `Flops`   |
-  | **Cave Puppy**      | `Bopping` |
-  | **Awkward Penguin** | ?         |
-  | **Ninja Tortoise**  | ?         |
-  | **Honey Badger**    | ?         |
-  | **Ninja Squirrel**  | ?         |
-  | **Fanboy Sidekick** | ?         |
-  | **COURAGE WOLF**    | ?         |
-  | **Blazing Phoenix** | ?         |
-  | **Red Herring**     | ?         |
-  | **1.1 Tailed Fox**  | ?         |
-  | **Salty Dog**       | `Nomming` |
+  | Pet Hero            | Specialty    |
+  | ------------------- | ------------ |
+  | **Ninja Kitty**     | `Flops`      |
+  | **Cave Puppy**      | `Bopping`    |
+  | **Awkward Penguin** | `Fancy`      |
+  | **Ninja Tortoise**  | `Stealth`    |
+  | **Honey Badger**    | `Strongness` |
+  | **Ninja Squirrel**  | `Sniffing`   |
+  | **Fanboy Sidekick** | `Nomming`    |
+  | **COURAGE WOLF**    | `Bopping`    |
+  | **Blazing Phoenix** | `Speedy`     |
+  | **Red Herring**     | `Flops`      |
+  | **1.1 Tailed Fox**  | `Ekeven`     |
+  | **Salty Dog**       | `Nomming`    |
 
 # Information Helpers
   - Gauss
