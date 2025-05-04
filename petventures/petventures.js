@@ -1,5 +1,16 @@
 // @ts-nocheck
-// @require https://raw.githubusercontent.com/itsnyxtho/bvs/refs/heads/main/petventures/petventures.js
+// ==UserScript==
+// @name         BvS Petventures Helper
+// @namespace    bvs
+// @version      0.0.1
+// @description  A helper for BvS Petventures pages.
+// @author       itsnyxtho
+// @match        https://animecubedgaming.com/billy/bvs/petventures.html
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=animecubedgaming.com
+// @require      https://raw.githubusercontent.com/itsnyxtho/bvs/refs/heads/main/petventures/petventures.js
+// @resource css https://raw.githubusercontent.com/itsnyxtho/bvs/refs/heads/main/petventures/petventures.css
+// @grant        GM_addStyle
+// ==/UserScript==
 (() => {
   // Get the player name and password from the page
   const name = document.querySelector('input[name="player"]')?.value;
