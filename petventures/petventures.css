@@ -1,0 +1,32 @@
+#petventures-container {
+  margin: 12px;
+  padding: 12px;
+  border-collapse: collapse;
+}
+
+#petventures-form {
+}
+
+#petventures-pets-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#petventures-pets-table thead {
+  background: #121212;
+  color: #fff;
+  font-weight: bold;
+}
+
+#petventures-pets-table td,
+#petventures-pets-table th {
+  padding: 8px;
+  text-align: center;
+  border: 2px solid #121212;
+}
+
+#petventures-pets-table th {
+}
+
+#petventures-pets-table > tr > td {
+}

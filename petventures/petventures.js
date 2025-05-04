@@ -1,4 +1,5 @@
 // @ts-nocheck
+// @require https://raw.githubusercontent.com/itsnyxtho/bvs/refs/heads/main/petventures/petventures.js
 (() => {
   // Get the player name and password from the page
   const name = document.querySelector('input[name="player"]')?.value;
@@ -9,8 +10,21 @@
   }
 
   const form = document.forms.petventurestrt;
+  form.id = "petventures-form";
   const checkboxes = [...form.querySelectorAll('input[type="checkbox"][name^="petbro-"]')];
   const allAttrs = new Set();
+
+  // Find <br> elements in the form and remove them
+  const brElements = form.querySelectorAll("br");
+  brElements.forEach((br) => {
+    br.remove();
+  });
+
+  // Get the parent <table> element of the <form>.
+  const table = form.closest("table");
+  if (table) {
+    table.id = "petventures-container";
+  }
 
   // Parse character data
   const characterData = checkboxes.map((cb) => {
@@ -34,16 +48,17 @@
 
   // Build table
   const table = document.createElement("table");
-  table.className = "bvscss--table";
+  table.className = "bvs-pets--table";
+  table.id = "petventures-pets-table";
   table.border = "1";
 
   const thead = table.createTHead();
   const headRow = thead.insertRow();
-  headRow.className = "bvscss--header-row";
+  headRow.className = "bvs-pets--header-row";
   const headers = ["Name", ...attrList, "Select"];
   headers.forEach((header, i) => {
     const th = document.createElement("th");
-    th.className = "bvscss--th";
+    th.className = "bvs-pets--th";
     th.textContent = header;
     th.style.cursor = "pointer";
     th.addEventListener("click", () => sortTableByColumn(i));
@@ -51,27 +66,27 @@
   });
 
   const tbody = table.createTBody();
-  tbody.className = "bvscss--tbody";
+  tbody.className = "bvs-pets--tbody";
 
   function populateTable(data) {
     tbody.innerHTML = "";
     data.forEach((char) => {
       const row = tbody.insertRow();
-      row.className = "bvscss--row";
+      row.className = "bvs-pets--row";
 
       const nameCell = row.insertCell();
-      nameCell.className = "bvscss--cell-name";
+      nameCell.className = "bvs-pets--cell-name";
       nameCell.textContent = char.name;
 
       attrList.forEach((attr) => {
         const cell = row.insertCell();
-        cell.className = `bvscss--cell-attr bvscss--attr-${attr.toLowerCase()}`;
+        cell.className = `bvs-pets--cell-attr bvs-pets--attr-${attr.toLowerCase()}`;
         const value = char.attributes[attr];
         cell.textContent = value != null ? value : "-";
       });
 
       const selectCell = row.insertCell();
-      selectCell.className = "bvscss--cell-select";
+      selectCell.className = "bvs-pets--cell-select";
       selectCell.appendChild(char.checkbox);
     });
   }
@@ -98,7 +113,7 @@
 
   // Enhance location select
   const locationSelect = form.querySelector('select[name="goloc"]');
-  locationSelect.className = "bvscss--select-location";
+  locationSelect.className = "bvs-pets--select-location";
   const specialties = {
     "Ramen Shop": "Sniffing",
     "Training Grounds": "Bopping",
@@ -114,18 +129,18 @@
   });
 
   const locationWrapper = document.createElement("div");
-  locationWrapper.className = "bvscss--location-wrapper";
-  locationWrapper.innerHTML = `<b class="bvscss--location-label">Adventure Location:</b><br>`;
+  locationWrapper.className = "bvs-pets--location-wrapper";
+  locationWrapper.innerHTML = `<b class="bvs-pets--location-label">Adventure Location:</b><br>`;
   locationWrapper.appendChild(locationSelect);
 
   // Bonus checkboxes
   const bonusWrapper = document.createElement("div");
-  bonusWrapper.className = "bvscss--bonus-wrapper";
-  bonusWrapper.innerHTML = `<b class="bvscss--bonus-label">Optional Bonuses:</b><br>`;
+  bonusWrapper.className = "bvs-pets--bonus-wrapper";
+  bonusWrapper.innerHTML = `<b class="bvs-pets--bonus-label">Optional Bonuses:</b><br>`;
   const bonusCheckboxes = [...form.querySelectorAll('input[type="checkbox"]')].filter((cb) => !cb.name.startsWith("petbro-"));
   bonusCheckboxes.forEach((cb) => {
     const label = cb.nextSibling;
-    cb.classList.add("bvscss--bonus-checkbox");
+    cb.classList.add("bvs-pets--bonus-checkbox");
     bonusWrapper.appendChild(cb);
     bonusWrapper.appendChild(label);
     bonusWrapper.appendChild(document.createElement("br"));
@@ -133,15 +148,15 @@
 
   // Action buttons
   const buttonWrapper = document.createElement("div");
-  buttonWrapper.className = "bvscss--button-wrapper";
+  buttonWrapper.className = "bvs-pets--button-wrapper";
 
   const startBtn = document.createElement("button");
-  startBtn.className = "bvscss--btn bvscss--btn-start";
+  startBtn.className = "bvs-pets--btn bvs-pets--btn-start";
   startBtn.textContent = "Start PetVenture";
   startBtn.onclick = () => form.submit();
 
   const resetBtn = document.createElement("button");
-  resetBtn.className = "bvscss--btn bvscss--btn-reset";
+  resetBtn.className = "bvs-pets--btn bvs-pets--btn-reset";
   resetBtn.textContent = "Reset Fields";
   resetBtn.type = "reset";
 
@@ -150,7 +165,7 @@
 
   // Replace form content and restore hidden fields
   form.innerHTML = "";
-  form.classList.add("bvscss--form");
+  form.classList.add("bvs-pets--form");
 
   const hiddenFields = [
     { name: "player", value: name },
