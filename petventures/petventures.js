@@ -9,6 +9,8 @@
     return;
   }
 
+  GM_addStyle(css);
+
   const form = document.forms.petventurestrt;
   form.id = "petventures-form";
   const checkboxes = [...form.querySelectorAll('input[type="checkbox"][name^="petbro-"]')];
