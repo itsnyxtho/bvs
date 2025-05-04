@@ -23,9 +23,9 @@
   });
 
   // Get the parent <table> element of the <form>.
-  const table = form.closest("table");
-  if (table) {
-    table.id = "petventures-container";
+  const containerTable = form.closest("table");
+  if (containerTable) {
+    containerTable.id = "petventures-container";
   }
 
   // Parse character data
