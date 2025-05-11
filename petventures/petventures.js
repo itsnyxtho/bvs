@@ -9,6 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=animecubedgaming.com
 // @require      https://raw.githubusercontent.com/itsnyxtho/bvs/refs/heads/main/petventures/petventures.js
 // @resource css https://raw.githubusercontent.com/itsnyxtho/bvs/refs/heads/main/petventures/petventures.css
+// @grant        GM_getResourceText
 // @grant        GM_addStyle
 // ==/UserScript==
 (() => {
@@ -20,6 +21,7 @@
     return;
   }
 
+  let css = GM_getResourceText("css");
   GM_addStyle(css);
 
   const form = document.forms.petventurestrt;
