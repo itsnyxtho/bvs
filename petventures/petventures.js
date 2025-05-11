@@ -13,6 +13,10 @@
 // @grant        GM_addStyle
 // ==/UserScript==
 (() => {
+  // Check if the page has the form, if not, bail
+  const form = document.forms.petventurestrt;
+  if (!form) return;
+
   // Get the player name and password from the page
   const name = document.querySelector('input[name="player"]')?.value;
   const pwd = document.querySelector('input[name="pwd"]')?.value;
@@ -24,7 +28,6 @@
   let css = GM_getResourceText("css");
   GM_addStyle(css);
 
-  const form = document.forms.petventurestrt;
   form.id = "petventures-form";
   const checkboxes = [...form.querySelectorAll('input[type="checkbox"][name^="petbro-"]')];
   const allAttrs = new Set();
