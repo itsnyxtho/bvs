@@ -94,9 +94,6 @@ const elementHandler = () => {
   }
 };
 
-// emptyElementHandler();
-// elementHandler();
-
 const bvsCSS = GM_getResourceText("BVS_CSS");
 GM_addStyle(bvsCSS);
 
