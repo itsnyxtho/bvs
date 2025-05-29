@@ -30,6 +30,7 @@
 // @include      http*://*animecubed*.com/billy/*
 // @icon         https://i.imgur.com/7r8xiya.png
 // ---- Resources ---------------------------------
+// @require      https://raw.githubusercontent.com/itsnyxtho/bvs/main/bvs/utils.js
 // @require      https://raw.githubusercontent.com/itsnyxtho/bvs/main/bvs/menus/party-house-menu.js
 // @resource css https://raw.githubusercontent.com/itsnyxtho/bvs/main/bvs/menus/party-house-menu.css
 // ---- Grants ------------------------------------

@@ -97,7 +97,7 @@
 | *Item*                                 | *Bonus Minutes* | *Skill*       |
 | Lunch Bag                              | +8 min          | `Sniffing`    |
 | Cheat Sheet                            | +8 min          | `Shenanigans` |
-| Love Letter                            | +25 min         | `Fancy`       |
+| Love Letter                            | +12 min         | `Fancy`       |
 | **Amazing-Level Items (Friend Finds)** |                 |               |
 | *Item*                                 | *Bonus Minutes* | *Friend*      |
 | Boiler Room Key                        | +20 min         | **Tabby**     |
