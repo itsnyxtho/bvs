@@ -112,7 +112,7 @@
     });
 
     const action = form.action || "";
-    const targetMatch = action.match(/\/([^\/?#]+)\.[a-z]+(?:\?.*)?$/i);
+    const targetMatch = action.match(/\/([^/?#]+)\.[a-z]+(?:\?.*)?$/i);
     const target = targetMatch ? targetMatch[1] : null;
 
     return {
@@ -166,9 +166,9 @@
       display: grid;
       justify-content: flex-start;
       align-items: center;
-      grid-template-rows: repeat(3, 30px);
+      grid-template-rows: 15px 30px 30px;
       grid-template-columns: 1fr 60px 30px;
-      gap: 4px 12px;
+      gap: 8px 12px;
       box-sizing: border-box;
     `;
 
@@ -282,11 +282,11 @@
       background: crimson;
       color: white;
       border: none;
-      height: 100%;
+      height: 30px;
       width: 100%;
       cursor: pointer;
       font-family: monospace;
-      grid-row: 2;
+      grid-row: 1 / 3;
       grid-column: 3;
       border-radius: 2px;
       display: flex;

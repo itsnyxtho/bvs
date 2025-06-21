@@ -4,6 +4,7 @@
 // @description Hotkeys for BvS Zombjas. A box displays the hotkeys and their functions on the zombjas page.
 // @author      Authority2, taltamir, itsnyxtho
 // @license     MIT
+// @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
 // @version     3.5
 // @history     3.5    2025 Update to get it working. Changes to visual display of hotkeys.
 //                     version by itsnyxtho
@@ -18,9 +19,12 @@
 // @history     1.0    Initial version by Authority2
 // @include     http*://*animecubed*.com/billy/bvs/zombjas.html
 // @grant       none
-// @downloadURL https://update.greasyfork.org/scripts/18808/BvS%20Zombja%20Hotkeys.user.js
-// @updateURL   https://update.greasyfork.org/scripts/18808/BvS%20Zombja%20Hotkeys.meta.js
+// @oldDownloadURL https://update.greasyfork.org/scripts/18808/BvS%20Zombja%20Hotkeys.user.js
+// @oldUpdateURL   https://update.greasyfork.org/scripts/18808/BvS%20Zombja%20Hotkeys.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/539855/BvS%20Zombjas%20Hotkeys%20%282025%29.user.js
+// @updateURL https://update.greasyfork.org/scripts/539855/BvS%20Zombjas%20Hotkeys%20%282025%29.meta.js
 // ==/UserScript==
+// @ts-nocheck
 
 (() => {
   /*
