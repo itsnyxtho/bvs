@@ -142,15 +142,14 @@
     const match = str.match(/(\d+)d(\d+)([ +-]+\d+)?/);
     if (!match) return [null, null, null];
     const [_, n, d, mod] = match;
-    // console.log(`Dice String Parts: n=${n}, d=${d}, mod=${mod?.replace(/[ +]/g, "")}`);
+    
     const num = parseInt(n),
       die = parseInt(d),
       offset = parseInt(mod?.replace(/[ +]/g, "") || 0);
     const min = num * 1 + offset;
     const max = num * die + offset;
     const avg = Math.round(((num * (1 + die)) / 2 + offset) * 100) / 100;
-    // console.log(`Values for ${str}: num: ${num}, die: ${die}, offset: ${offset}`);
-    // console.log(`Parsed dice: ${str} => min: ${min}, max: ${max}, avg: ${avg}`);
+
     return [min, max, avg];
   };
 

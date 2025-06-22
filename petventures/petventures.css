@@ -1,6 +1,6 @@
 #petventures-container {
   margin: 12px;
-  padding: 12px;
+  padding: 4px;
   border-collapse: collapse;
 }
 
@@ -8,7 +8,6 @@
 }
 
 #petventures-pets-table {
-  width: 100%;
   border-collapse: collapse;
 }
 
@@ -20,7 +19,7 @@
 
 #petventures-pets-table td,
 #petventures-pets-table th {
-  padding: 8px;
+  padding: 4px;
   text-align: center;
   border: 2px solid #121212;
 }

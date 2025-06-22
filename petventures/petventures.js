@@ -21,7 +21,6 @@
   const name = document.querySelector('input[name="player"]')?.value;
   const pwd = document.querySelector('input[name="pwd"]')?.value;
   if (!name || !pwd) {
-    console.error("Player name or password not found.");
     return;
   }
 
@@ -73,7 +72,7 @@
   const thead = table.createTHead();
   const headRow = thead.insertRow();
   headRow.className = "bvs-pets--header-row";
-  const headers = ["Name", ...attrList, "Select"];
+  const headers = ["Select", "Name", ...attrList];
   headers.forEach((header, i) => {
     const th = document.createElement("th");
     th.className = "bvs-pets--th";
@@ -92,6 +91,10 @@
       const row = tbody.insertRow();
       row.className = "bvs-pets--row";
 
+      const selectCell = row.insertCell();
+      selectCell.className = "bvs-pets--cell-select";
+      selectCell.appendChild(char.checkbox);
+
       const nameCell = row.insertCell();
       nameCell.className = "bvs-pets--cell-name";
       nameCell.textContent = char.name;
@@ -102,10 +105,6 @@
         const value = char.attributes[attr];
         cell.textContent = value != null ? value : "-";
       });
-
-      const selectCell = row.insertCell();
-      selectCell.className = "bvs-pets--cell-select";
-      selectCell.appendChild(char.checkbox);
     });
   }
 
