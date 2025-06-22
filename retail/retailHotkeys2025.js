@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         BvS Retail Hotkeys 2025
+// @name         BvS Retail Hotkeys (2025)
 // @author       taltamir, itsnyxtho
 // @namespace    bvs
 // @license      MIT

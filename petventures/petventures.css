@@ -1,31 +1,53 @@
-#petventures-container {
+.bvs-petventures--container {
   margin: 12px;
   padding: 4px;
   border-collapse: collapse;
 }
 
-#petventures-form {
+.bvs-petventures--form {
+  padding: 6px;
 }
 
-#petventures-pets-table {
+.bvs-petventures--table {
   border-collapse: collapse;
+  font-size: 11px;
+  font-family: monospace;
+  color: #121212;
 }
 
-#petventures-pets-table thead {
+.bvs-petventures--table tr > td:first-of-type,
+.bvs-petventures--table thead {
   background: #121212;
   color: #fff;
   font-weight: bold;
 }
 
-#petventures-pets-table td,
-#petventures-pets-table th {
-  padding: 4px;
+.bvs-petventures--table td,
+.bvs-petventures--table th {
+  padding: 2px;
   text-align: center;
   border: 2px solid #121212;
 }
 
-#petventures-pets-table th {
+.bvs-petventures--table thead > th:first-of-type,
+.bvs-petventures--table tr > td:first-of-type {
+  text-align: right;
 }
 
-#petventures-pets-table > tr > td {
+.bvs-petventures--btn-reset,
+.bvs-petventures--btn-start {
+  height: 32px;
+  padding: 2px;
+  margin: 6px;
+  background: #121212;
+  color: #ffffff;
+  border: 2px solid #121212;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bvs-petventures--btn-reset {
+  background: #FFFFFF;
+  border: 2px solid #121212;
+  color: #121212;
 }
