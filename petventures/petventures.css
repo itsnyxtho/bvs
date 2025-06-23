@@ -1,7 +1,21 @@
-.bvs-petventures--container {
+td.bvs-petventures--parent-container-cell {
+  text-align: center;
+  vertical-align: top;
+  display: grid;
+  justify-items: center;
+}
+
+table.bvs-petventures--container {
   margin: 12px;
-  padding: 4px;
+  padding: 12px;
   border-collapse: collapse;
+  border: 0px solid blue;
+  background-color: rgba(238, 255, 255, 50%);
+  height: fit-content;
+  width: fit-content;
+  display: grid;
+  align-items: center;
+  justify-content: center;
 }
 
 .bvs-petventures--form {
@@ -15,7 +29,8 @@
   color: #121212;
 }
 
-.bvs-petventures--table tr > td:first-of-type,
+.bvs-petventures--table tr > td:last-of-type,
+.bvs-petventures--table tr > td:nth-of-type(11),
 .bvs-petventures--table thead {
   background: #121212;
   color: #fff;
@@ -29,16 +44,16 @@
   border: 2px solid #121212;
 }
 
-.bvs-petventures--table thead > th:first-of-type,
-.bvs-petventures--table tr > td:first-of-type {
+.bvs-petventures--table thead > th:nth-of-type(11),
+.bvs-petventures--table tr > :nth-of-type(11) {
   text-align: right;
 }
 
-.bvs-petventures--btn-reset,
-.bvs-petventures--btn-start {
+button.bvs-petventures--btn-reset,
+button.bvs-petventures--btn-start {
   height: 32px;
-  padding: 2px;
-  margin: 6px;
+  padding: 6px;
+  margin: 6px 6px 0 6px;
   background: #121212;
   color: #ffffff;
   border: 2px solid #121212;
@@ -46,8 +61,8 @@
   cursor: pointer;
 }
 
-.bvs-petventures--btn-reset {
-  background: #FFFFFF;
+button.bvs-petventures--btn-reset {
+  background: #ffffff;
   border: 2px solid #121212;
   color: #121212;
 }

@@ -42,8 +42,15 @@
 
   // Get the parent <table> element of the <form>.
   const containerTable = form.closest("table");
+  let containerTableParentCell;
   if (containerTable) {
     containerTable.id = "bvs-petventures--container";
+    containerTable.removeAttribute("style");
+    containerTableParentCell = containerTable.parentElement;
+    if (containerTableParentCell) {
+      containerTableParentCell.removeAttribute("style");
+      containerTableParentCell.classList.add("bvs-petventures--parent-container-cell");
+    }
   }
 
   // Parse character data
