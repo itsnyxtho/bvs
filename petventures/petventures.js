@@ -45,6 +45,7 @@
   let containerTableParentCell;
   if (containerTable) {
     containerTable.id = "bvs-petventures--container";
+    containerTable.classList.add("bvs-petventures--container");
     containerTable.removeAttribute("style");
     containerTableParentCell = containerTable.parentElement;
     if (containerTableParentCell) {
