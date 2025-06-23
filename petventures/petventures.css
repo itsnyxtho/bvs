@@ -27,6 +27,7 @@ table.bvs-petventures--container {
   font-size: 11px;
   font-family: monospace;
   color: #121212;
+  background: white;
 }
 
 .bvs-petventures--table tr > td:last-of-type,
