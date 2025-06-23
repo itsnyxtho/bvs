@@ -106,7 +106,7 @@
       const row = tbody.insertRow();
       row.className = "bvs-petventures--row";
 
-      attrList.forEach((attr) => {
+      attributesList.forEach((attr) => {
         const cell = row.insertCell();
         cell.className = `bvs-petventures--cell-attr bvs-petventures--attr-${attr.toLowerCase()}`;
         const value = char.attributes[attr];
