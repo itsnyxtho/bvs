@@ -2,9 +2,11 @@
 // ==UserScript==
 // @name         Cosplay Parts + Combo Table
 // @namespace    bvs
+// @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
 // @version      1.0.7
+// @author       itsnyxtho
 // @description  Replaces cosplay checklist with styled part/combo tables
-// @match        *://*animecubed*/billy/bvs/*
+// @include        http*://*animecubed*/billy/bvs/billycon.html
 // @grant        none
 // ==/UserScript==
 
@@ -142,7 +144,7 @@
     const match = str.match(/(\d+)d(\d+)([ +-]+\d+)?/);
     if (!match) return [null, null, null];
     const [_, n, d, mod] = match;
-    
+
     const num = parseInt(n),
       die = parseInt(d),
       offset = parseInt(mod?.replace(/[ +]/g, "") || 0);
@@ -415,7 +417,7 @@
       font-variant-numeric: tabular-nums;
       font-feature-settings: 'tnum';
     }
-      
+
   `;
   document.head.appendChild(style);
 

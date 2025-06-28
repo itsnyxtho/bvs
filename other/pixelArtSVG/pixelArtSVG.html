@@ -1,0 +1,38 @@
+<div class="pixel-art-svg">
+  <h1 class="pas--title">Pixel Art SVG Maker</h1>
+  <div class="pas--file-input">
+    <input type="file" id="imgLoader" accept="image/*" />
+  </div>
+  <button id="downloadRaw" title="Download raw svg. Click the preview image for configured download." class="pas--download-button">Download Raw SVG</button>
+  <hr style="width: calc(100% - 4px);">
+  <div class="pas--settings">
+    <h2>Customization Options & Preview</h2>
+    <fieldset class="pas--bg-options">
+      <legend>Background Options</legend>
+      <label class="pas--background">Background:
+        <input type="color" id="bgColor" value="#ffffff">
+      </label>
+      <label><input name="bgTransparent" type="checkbox" id="bgTransparent" checked>Transparent</label>
+      <label class="pas--alpha">Alpha:
+        <input type="range" id="bgAlpha" min="0" max="1" step="0.01" value="1">
+      </label>
+    </fieldset>
+    <fieldset class="pas--export-options">
+      <legend>Export Options</legend>
+      <label class="pas--file-name">File Name:
+        <input type="text" id="fileName" size="40" />
+      </label><br>
+      <label class="pas--opacity">Opacity:
+        <input type="range" id="opacity" min="0" max="100" value="100">
+      </label>
+      <label>Scale:
+        <input type="number" id="scale" step="0.25" min="0.25" value="1">
+      </label>
+      <label>
+        <input type="checkbox" id="simplify"> Simplify
+      </label>
+    </fieldset>
+  </div>
+  <div id="svgPreview" class="pas--svg-preview"></div>
+  <button onclick="copySvgToClipboard(el.svgPreview.querySelector(`svg`));">Copy to Clipboard</button>
+</div>

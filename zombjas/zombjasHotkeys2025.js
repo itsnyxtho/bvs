@@ -1,30 +1,56 @@
 // ==UserScript==
-// @name        BvS Zombjas Hotkeys (2025)
-// @namespace   bvs
-// @description Hotkeys for BvS Zombjas. A box displays the hotkeys and their functions on the zombjas page.
-// @author      Authority2, taltamir, itsnyxtho
+// @name		BvS Zombjas Hotkeys (2025)
+// @namespace	bvs
+// @description	Hotkeys for BvS Zombjas. A box displays the hotkeys and their functions on the zombjas page.
+// @author	    Authority2, taltamir, itsnyxtho
 // @license     MIT
-// @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
+// @icon        https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
 // @version     3.5
 // @history     3.5    2025 Update to get it working. Changes to visual display of hotkeys.
 //                     version by itsnyxtho
-// @history     3.0    Removed searching from contextual action button. Tweaked
+// @history		3.0    Removed searching from contextual action button. Tweaked
 //                     hospital strategy (heal infection, then fight, then heal HP).
 //                     Added special key for searching specifically (L). version by taltamir.
-// @history     2.0    Optimized strategy. added heal infection, heal HP, and search. Instead
+// @history		2.0    Optimized strategy. added heal infection, heal HP, and search. Instead
 //                     of keys surrounding G, use numpad and keys surrounding S (left and right
 //                     handed options). switched include to match. rewrote almost all code.
 //                     fixed bug where key detected press rather than release despite notes
 //                     saying otherwise. version by taltamir
-// @history     1.0    Initial version by Authority2
-// @include     http*://*animecubed*.com/billy/bvs/zombjas.html
+// @history		1.0    Initial version by Authority2
+// @include		http*://*animecubed*.com/billy/bvs/zombjas.html
 // @grant       none
-// @oldDownloadURL https://update.greasyfork.org/scripts/18808/BvS%20Zombja%20Hotkeys.user.js
-// @oldUpdateURL   https://update.greasyfork.org/scripts/18808/BvS%20Zombja%20Hotkeys.meta.js
 // @downloadURL https://update.greasyfork.org/scripts/539855/BvS%20Zombjas%20Hotkeys%20%282025%29.user.js
 // @updateURL https://update.greasyfork.org/scripts/539855/BvS%20Zombjas%20Hotkeys%20%282025%29.meta.js
 // ==/UserScript==
-// @ts-nocheck
+
+// Register hotkeys for Hotkey Reference Box
+(function registerHotkeys() {
+  const HOTKEY_STORAGE_KEY = "bvs-hotkeys_zombjas";
+
+  const hotkeys = [
+    { keyCombination: "Q / Numpad 7", description: "Move up-left", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "W / Numpad 8", description: "Move up", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "E / Numpad 9", description: "Move up-right", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "A / Numpad 4", description: "Move left", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "D / Numpad 6", description: "Move right", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "Z / Numpad 1", description: "Move down-left", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "X / Numpad 2", description: "Move down", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "C / Numpad 3", description: "Move down-right", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "S / Numpad 5", description: "Take action (heal/fight)", ownerScript: "BvS Zombjas Hotkeys" },
+    { keyCombination: "R / L", description: "Search", ownerScript: "BvS Zombjas Hotkeys" },
+  ];
+
+  localStorage.setItem(
+    HOTKEY_STORAGE_KEY,
+    JSON.stringify({
+      locations: {
+        include: ["http*://*animecubed*.com/billy/bvs/zombjas.html"],
+        exclude: [],
+      },
+      hotkeys,
+    }),
+  );
+})();
 
 (() => {
   /*

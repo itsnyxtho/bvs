@@ -5,7 +5,7 @@
 // @license      MIT
 // @description  Retail hotkeys for BvS. SHIFT + H displays hotkeys in bottom left corner.
 // @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
-// @version      7.0.0 
+// @version      7.0.0
 // @history      7.0.0 Added SHIFT + H to display hotkeys in bottom left corner.
 //                     Added T to step through options of the targets select box.
 //                     Added ENTER to submit the makeaction form, regardless of selections existence.
@@ -20,6 +20,8 @@
 // @grant        none
 // @prevDownloadURL https://update.greasyfork.org/scripts/16601/BvS%20Retail%20Hotkeys.user.js
 // @prevUpdateURL https://update.greasyfork.org/scripts/16601/BvS%20Retail%20Hotkeys.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/540046/BvS%20Retail%20Hotkeys%202025.user.js
+// @updateURL https://update.greasyfork.org/scripts/540046/BvS%20Retail%20Hotkeys%202025.meta.js
 // ==/UserScript==
 // @ts-nocheck
 
@@ -123,6 +125,40 @@ Five Minutes to Go: <input type="checkbox" name="fiveminpotion" value="1" id="f1
 LEAP: <input type="checkbox" name="bossaction2" value="1" id="ba1">
 Take action: <a href="javascript:document.makeaction.submit();" onfocus="this.blur();" style="color:000066"><b>Take Action &gt;</b></a>
 */
+
+// Register hotkeys for Hotkey Reference Box
+(function registerHotkeys() {
+  const HOTKEY_STORAGE_KEY = "bvs-hotkeys_retail";
+
+  const hotkeys = [
+    { keyCombination: "Shift + H", description: "Toggle hotkey help box", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "W / ↑", description: "Titan Attack", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "A / ←", description: "Titan Move Left", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "S / ↓", description: "Titan Strafe", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "D / →", description: "Titan Move Right", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "Q", description: "Titan: Five Minutes Potion", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "E", description: "Titan: LEAP", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "D", description: "Store: Deodorant Bomb", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "C", description: "Store: Cleansing Fire", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "F", description: "Store: Freebie Giveaways", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "P", description: "Store: The Phone", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "T", description: "Store: Cycle target selector", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "1–5 / Numpad 1–5", description: "Store: Perform Action Slot 1–5", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "Enter", description: "Submit makeaction form", ownerScript: "BvS Retail Hotkeys" },
+    { keyCombination: "Any Key", description: "Continue past end-of-shift/titan summary", ownerScript: "BvS Retail Hotkeys" },
+  ];
+
+  localStorage.setItem(
+    HOTKEY_STORAGE_KEY,
+    JSON.stringify({
+      locations: {
+        include: ["http*://*animecubed*.com/billy/bvs/shop-retail.html"],
+        exclude: [],
+      },
+      hotkeys,
+    }),
+  );
+})();
 
 (() => {
   function submit_form(form_name) {

@@ -1,0 +1,91 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  padding: 6px;
+  background: antiquewhite;
+}
+
+.pixel-art-svg {
+  width: max-content;
+  display: grid;
+  gap: 16px;
+  margin: auto;
+  background: #cccccccc;
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.pas--title,
+h2 {
+  display: block;
+  width: 100%;
+  background: #99999999;
+  padding: 0 3px;
+  margin: 0px;
+}
+
+.pas--file-input {
+  margin: 0 2px;
+}
+
+.pas--settings {
+  display: grid;
+  grid-flow: row;
+  padding: 0;
+  gap: 16px;
+}
+
+fieldset {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 20px;
+  justify-items: center;
+}
+
+label {
+  display: grid;
+  align-items: center;
+  align-content: center;
+  justify-content: space-evenly;
+  grid-auto-flow: column;
+  width: max-content;
+  gap: 12px;
+}
+
+input[type="number"],
+input[type="text"] {
+  height: 32px;
+}
+
+input[type="number"] {
+  width: 50px;
+}
+
+.pas--svg-preview-container {
+  display: grid;
+  background: #00000080;
+  border: 2px groove;
+  padding: 0;
+}
+
+.pas--svg-preview {
+  border: 0px solid #121212;
+  overflow: hidden;
+}
+
+.pas--svg-preview > svg {
+  cursor: pointer;
+}
+
+button, .pas--download-button {
+  height: 32px;
+  margin: 0 2px;
+}
+
+#pas-credit-bar {
+  max-height: 16px;
+  max-width: 80px;
+}
