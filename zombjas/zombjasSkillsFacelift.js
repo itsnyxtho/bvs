@@ -126,7 +126,7 @@
     const isMax = level > 4;
     const cost = isMax ? "Maxed!" : costText;
     const selectContent = isMax ? "✔✔" : "";
-      console.log(line,isMax,cost,selectContent);
+    console.log(line, isMax, cost, selectContent);
     skillRows.push({
       name,
       level,
@@ -134,14 +134,12 @@
       input,
       selectContent,
       desc: descriptions[name] || "",
-      class: input.disabled ? "bvs-disabled" : (!isMax ? "bvs-upgradable" : "")
+      class: input.disabled ? "bvs-disabled" : !isMax ? "bvs-upgradable" : "",
     });
   });
 
   const allNames = new Set([...Object.keys(skillLevels), ...Object.keys(descriptions)]);
   for (const name of allNames) {
-
-
     const isMax = skillLevels[name] > 4;
     const cost = isMax ? "Maxed!" : "-";
     const className = isMax ? "bvs-skill-lvl-5" : "";
@@ -154,7 +152,7 @@
         input: null,
         selectContent: selectContent || "",
         desc: descriptions[name] || "",
-        class: className || ""
+        class: className || "",
       });
     }
   }

@@ -1,11 +1,12 @@
 // @ts-nocheck
 // ==UserScript==
-// @name         BvS Menu Bar Facelift (Stylized, Grouped, Persistent)
+// @name         BvS Menu Bar Facelift
 // @namespace    BvS
 // @version      0.0.4
 // @description  Combines and styles BvS minimenu into grouped, collapsible, persistent buttons with hide support per section and screen
 // @include      http*://*animecubed*/billy/bvs/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=animecubedgaming.com
+// @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
 // @grant        none
 // ==/UserScript==
 
@@ -429,6 +430,19 @@
   document.body.style.height = "100vh";
   document.body.style.width = "100vw";
 
+  // Styles
+  const style = document.createElement("style");
+  style.textContent = `
+    .bvs-nav-body::-webkit-scrollbar {
+      display: none; /* Hides the scrollbar */
+    }
+    .bvs-nav-body {
+      scrollbar-width: none; /* Hides the scrollbar for Firefox */
+      -ms-overflow-style: none; /* Hides the scrollbar for IE and Edge */
+    }
+  `;
+  document.head.appendChild(style);
+
   let topContainer = document.getElementById("container");
   if (topContainer) {
     topContainer.style.height = "100%";
@@ -440,6 +454,8 @@
 
   const STORAGE_KEY = "bvs-menu-hidden";
   const COLLAPSE_KEY = "bvs-menu-collapsed";
+  const SIDE_KEY = "bvs-nav-side";
+  const VISIBLE_KEY = "bvs-nav-visible";
 
   if (!localStorage.getItem(COLLAPSE_KEY)) {
     const initialCollapsed = ["section-Settings", "section-Daily", "section-Village", "section-Items", "section-Combat", "section-Games", "section-Pets", "section-BvS", "section-Other", "section-Links", "section-Hidden"];
@@ -558,14 +574,7 @@
   }
 
   function renderButtons(buttons, unifiedForm) {
-    const existingIds = new Set();
-    const grouped = {};
-    for (const btn of buttons) {
-      if (existingIds.has(btn.id)) continue;
-      existingIds.add(btn.id);
-      if (!grouped[btn.section]) grouped[btn.section] = [];
-      grouped[btn.section].push(btn);
-    }
+    const grouped = groupButtonsBySection(buttons);
 
     const buttonTable = document.createElement("table");
     buttonTable.style.borderCollapse = "collapse";
@@ -582,147 +591,13 @@
       const visibleButtons = group.filter((btn) => !hiddenButtons.has(btn.id));
       const hiddenGroup = group.filter((btn) => hiddenButtons.has(btn.id));
       if (visibleButtons.length === 0 && hiddenGroup.length === 0) continue;
-      let cell;
+
       if (section === "") {
-        for (const btn of visibleButtons) {
-          if (document.getElementById(btn.id)) continue;
-
-          const row = document.createElement("tr");
-          const cell = document.createElement("td");
-          cell.style.padding = "0";
-
-          const button = document.createElement("button");
-          button.id = btn.id;
-          button.type = "button";
-          button.style.width = "100%";
-          button.style.height = "24px";
-          button.style.padding = "4px 8px";
-          button.style.background = `#833102 url(${getSectionBg(btn.section)})`;
-          button.style.backgroundSize = "cover";
-          button.style.fontSize = "10px";
-          button.style.fontFamily = "Verdana, sans-serif";
-          button.style.textAlign = "left";
-          button.style.border = "none";
-          button.style.borderBottom = "1px solid #631E02";
-          button.style.color = "#fff";
-          button.style.position = "relative";
-          button.style.fontWeight = "bold";
-          button.style.cursor = "pointer";
-
-          const labelSpan = document.createElement("span");
-          labelSpan.textContent = btn.label;
-          labelSpan.style.position = "relative";
-          labelSpan.style.zIndex = "1";
-          button.appendChild(labelSpan);
-
-          button.addEventListener("click", () => {
-            [...unifiedForm.querySelectorAll(".custom-field")].forEach((el) => el.remove());
-            for (const { name, value } of btn.fields || []) {
-              const input = document.createElement("input");
-              input.type = "hidden";
-              input.name = name;
-              input.value = value;
-              input.classList.add("custom-field");
-              unifiedForm.appendChild(input);
-            }
-            unifiedForm.action = btn.action;
-            unifiedForm.method = btn.method;
-            unifiedForm.submit();
-          });
-
-          const hideBtn = document.createElement("span");
-          hideBtn.textContent = "⮽";
-          hideBtn.title = "Hide this button";
-          hideBtn.style.float = "right";
-          hideBtn.style.cursor = "pointer";
-          hideBtn.style.fontSize = "12px";
-          hideBtn.style.fontWeight = "bold";
-          hideBtn.style.paddingLeft = "6px";
-          hideBtn.style.color = "#fff";
-          hideBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            hiddenButtons.add(btn.id);
-            saveState();
-            renderButtons(buttons, unifiedForm);
-          });
-          button.appendChild(hideBtn);
-
-          cell.appendChild(button);
-          row.appendChild(cell);
-          tbody.appendChild(row);
-        }
-
-        continue; // Skip the rest of the section rendering logic
+        renderRootButtons(visibleButtons, tbody, unifiedForm, buttons);
+        continue;
       }
 
-      const buttonRows = [];
-
-      for (const btn of visibleButtons) {
-        if (document.getElementById(btn.id)) continue;
-
-        const row = document.createElement("div");
-        const button = document.createElement("button");
-        button.id = btn.id;
-        button.type = "button";
-        button.style.width = "100%";
-        button.style.height = "24px";
-        button.style.padding = "4px 8px";
-        button.style.background = `${btn.section === "" ? "#833102" : "#444"} url(${getSectionBg(btn.section)})`;
-        button.style.backgroundSize = "cover";
-        button.style.fontSize = "10px";
-        button.style.fontFamily = "Verdana, sans-serif";
-        button.style.textAlign = "left";
-        button.style.border = "none";
-        button.style.borderBottom = "1px solid #631E02";
-        button.style.color = btn.section === "Village" ? "#121212" : "#fff";
-        button.style.position = "relative";
-        button.style.fontWeight = "bold";
-        button.style.cursor = "pointer";
-
-        const labelSpan = document.createElement("span");
-        labelSpan.textContent = btn.label;
-        labelSpan.style.position = "relative";
-        labelSpan.style.zIndex = "1";
-        button.appendChild(labelSpan);
-
-        button.addEventListener("click", () => {
-          [...unifiedForm.querySelectorAll(".custom-field")].forEach((el) => el.remove());
-          for (const { name, value } of btn.fields || []) {
-            const input = document.createElement("input");
-            input.type = "hidden";
-            input.name = name;
-            input.value = value;
-            input.classList.add("custom-field");
-            unifiedForm.appendChild(input);
-          }
-          unifiedForm.action = btn.action;
-          unifiedForm.method = btn.method;
-          unifiedForm.submit();
-        });
-
-        const hideBtn = document.createElement("span");
-        hideBtn.textContent = "⮽";
-        hideBtn.title = "Hide this button";
-        hideBtn.style.float = "right";
-        hideBtn.style.cursor = "pointer";
-        hideBtn.style.fontSize = "12px";
-        hideBtn.style.fontWeight = "bold";
-        hideBtn.style.paddingLeft = "6px";
-        hideBtn.style.color = btn.section === "Village" ? "#121212" : "#fff";
-        hideBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          hiddenButtons.add(btn.id);
-          saveState();
-          renderButtons(buttons, unifiedForm);
-        });
-        button.appendChild(hideBtn);
-
-        row.appendChild(button);
-        buttonRows.push(row);
-      }
-
+      const buttonRows = renderSectionButtons(visibleButtons, unifiedForm, buttons);
       const { headerRow, bodyRow } = createSectionRow(section, sectionId, collapsed, buttonRows);
       tbody.appendChild(headerRow);
       tbody.appendChild(bodyRow);
@@ -732,6 +607,109 @@
     const oldTable = unifiedForm.querySelector("table");
     if (oldTable) oldTable.remove();
     unifiedForm.appendChild(buttonTable);
+  }
+
+  function groupButtonsBySection(buttons) {
+    const existingIds = new Set();
+    const grouped = {};
+    for (const btn of buttons) {
+      if (existingIds.has(btn.id)) continue;
+      existingIds.add(btn.id);
+      if (!grouped[btn.section]) grouped[btn.section] = [];
+      grouped[btn.section].push(btn);
+    }
+    return grouped;
+  }
+
+  function renderRootButtons(visibleButtons, tbody, unifiedForm, allButtons) {
+    for (const btn of visibleButtons) {
+      if (document.getElementById(btn.id)) continue;
+
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+      cell.style.padding = "0";
+
+      const button = createButtonElement(btn, unifiedForm, allButtons, "#833102", "#fff");
+      cell.appendChild(button);
+      row.appendChild(cell);
+      tbody.appendChild(row);
+    }
+  }
+
+  function renderSectionButtons(visibleButtons, unifiedForm, allButtons) {
+    const buttonRows = [];
+    for (const btn of visibleButtons) {
+      if (document.getElementById(btn.id)) continue;
+
+      const row = document.createElement("div");
+      const color = btn.section === "Village" ? "#121212" : "#fff";
+      const bg = btn.section === "" ? "#833102" : "#444";
+      const button = createButtonElement(btn, unifiedForm, allButtons, bg, color);
+      row.appendChild(button);
+      buttonRows.push(row);
+    }
+    return buttonRows;
+  }
+
+  function createButtonElement(btn, unifiedForm, allButtons, bgColor, textColor) {
+    const button = document.createElement("button");
+    button.id = btn.id;
+    button.type = "button";
+    button.style.width = "100%";
+    button.style.height = "24px";
+    button.style.padding = "4px 8px";
+    button.style.background = `${bgColor} url(${getSectionBg(btn.section)})`;
+    button.style.backgroundSize = "cover";
+    button.style.fontSize = "10px";
+    button.style.fontFamily = "Verdana, sans-serif";
+    button.style.textAlign = "left";
+    button.style.border = "none";
+    button.style.borderBottom = "1px solid #631E02";
+    button.style.color = textColor;
+    button.style.position = "relative";
+    button.style.fontWeight = "bold";
+    button.style.cursor = "pointer";
+
+    const labelSpan = document.createElement("span");
+    labelSpan.textContent = btn.label;
+    labelSpan.style.position = "relative";
+    labelSpan.style.zIndex = "1";
+    button.appendChild(labelSpan);
+
+    button.addEventListener("click", () => {
+      [...unifiedForm.querySelectorAll(".custom-field")].forEach((el) => el.remove());
+      for (const { name, value } of btn.fields || []) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+        input.classList.add("custom-field");
+        unifiedForm.appendChild(input);
+      }
+      unifiedForm.action = btn.action;
+      unifiedForm.method = btn.method;
+      unifiedForm.submit();
+    });
+
+    const hideBtn = document.createElement("span");
+    hideBtn.textContent = "⮽";
+    hideBtn.title = "Hide this button";
+    hideBtn.style.float = "right";
+    hideBtn.style.cursor = "pointer";
+    hideBtn.style.fontSize = "12px";
+    hideBtn.style.fontWeight = "bold";
+    hideBtn.style.paddingLeft = "6px";
+    hideBtn.style.color = textColor;
+    hideBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      hiddenButtons.add(btn.id);
+      saveState();
+      renderButtons(allButtons, unifiedForm);
+    });
+    button.appendChild(hideBtn);
+
+    return button;
   }
 
   // === 🧲 extract menuItems ===
@@ -765,115 +743,260 @@
     order: sectionMap[btn.id]?.order || btn.order || 0,
   }));
 
+  // Restore stored states
+  const side = localStorage.getItem(SIDE_KEY) === "1";
+  const isVisible = localStorage.getItem(VISIBLE_KEY) !== "0";
+
+  // Get Elements
+  let outerWrapper = document.getElementById("wrapper") || document.body;
+
+  const navContainerConfig = {
+    defaults: {
+      position: "sticky",
+      boxSizing: "border-box",
+      background: "#111",
+      top: "0px",
+      right: "0px",
+      border: "1px solid #631E02",
+      borderTop: "none",
+      borderBottom: "none",
+      fontFamily: "Verdana, sans-serif",
+      fontSize: "12px",
+      color: "#fff",
+      height: "100vh",
+      width: "192px",
+      gridColumn: "2",
+      gridRow: "1",
+      overflow: "hidden auto",
+      display: "grid",
+      gridTemplateRows: "auto 1fr max-content",
+    },
+    collapsed: {
+      height: "35px",
+      position: "absolute",
+      overflow: "hidden",
+      gridTemplateRows: "35px 0 0",
+    },
+  };
+  navContainerConfig.left = {
+    gridColumn: "1",
+  };
+  navContainerConfig.right = {
+    gridColumn: "2",
+  };
+
+  const headerBoxConfig = {
+    background: "#300",
+    cursor: "pointer",
+    padding: "4px 8px",
+    userSelect: "none",
+    display: "grid",
+    gridTemplateColumns: "1fr 25px 25px 25px",
+    gridTemplateRows: "1fr",
+    gap: "2px",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    justifyItems: "center",
+  };
+
+  const navButtonConfig = {
+    defaults: {
+      border: "none",
+      background: "#ffffff40",
+      marginLeft: "8px",
+      padding: "0",
+      fontSize: "14px",
+      width: "25px",
+      height: "25px",
+      fontWeight: "900",
+      cursor: "pointer",
+    },
+    resetButton: {
+      title: "Reset Navigation",
+      textContent: "🔄",
+    },
+    hideButton: {
+      show: {
+        textContent: "👀",
+        title: "Show Navigation",
+      },
+      hide: {
+        textContent: "⛔",
+        title: "Hide Navigation",
+      },
+    },
+    switchButton: {
+      left: {
+        textContent: "⏭️",
+        title: "Switch Navigation to the Left Side",
+      },
+      right: {
+        textContent: "⏮️",
+        title: "Switch Navigation to the Right Side",
+      },
+    },
+  };
+
+  const navBodyConfig = {};
+
+  const outerWrapperConfig = {
+    defaults: {
+      display: "grid",
+      height: "100vh",
+      width: "100vw",
+      overflow: "hidden",
+      margin: "0",
+      padding: "0",
+    },
+    left: {
+      gridTemplateColumns: "1fr " + navContainerConfig.defaults.width,
+    },
+    right: {
+      gridTemplateColumns: navContainerConfig.defaults.width + " 1fr",
+    },
+  };
+
   // === 🧱 create floating panel ===
   const navContainer = document.createElement("div");
-  navContainer.style.position = "sticky";
-  navContainer.style.background = "#111";
-  navContainer.style.top = "0px";
-  navContainer.style.right = "0px";
-  navContainer.style.border = "1px solid #631E02";
-  navContainer.style.borderTop = "none";
-  navContainer.style.borderBottom = "none";
-  navContainer.style.fontFamily = "Verdana, sans-serif";
-  navContainer.style.fontSize = "12px";
-  navContainer.style.color = "#fff";
-  navContainer.style.height = "100vh";
-  navContainer.style.width = "190px";
-  navContainer.style.gridColumn = "2";
-  navContainer.style.gridRow = "1 / 4";
-  navContainer.style.justifySelf = "end";
-  navContainer.style.display = "grid";
-  navContainer.style.gridTemplateRows = "auto 1fr";
+  // Apply default styles
+  Object.assign(navContainer.style, navContainerConfig.defaults);
 
+  // Hide scrollbars while allowing scrolling in the navigation container
   const navHeader = document.createElement("div");
 
   // Add Reset Button to Navigation Header
   function createNavHeader() {
-    const header = document.createElement("div");
-    header.style.background = "#300";
-    header.style.cursor = "pointer";
-    header.style.padding = "4px 8px";
-    header.style.userSelect = "none";
-    header.style.display = "grid";
-    header.style.gridTemplateColumns = "1fr 25px 25px";
-    header.style.gridTemplateRows = "1fr";
-    header.style.gap = "2px";
-    header.style.alignItems = "center";
-    header.style.alignContent = "center";
-    header.style.justifyContent = "center";
-    header.style.justifyItems = "center";
+    // Create the header container
+    const headerBox = document.createElement("div");
+    // Apply header styles
+    Object.assign(headerBox.style, headerBoxConfig);
 
-    const title = document.createElement("span");
-    title.textContent = "Navigation";
-    title.style.width = "100%";
-    title.style.fontWeight = "900";
-    title.style.fontVariant = "small-caps";
-    header.appendChild(title);
+    // Add a title to the header
+    const headerText = document.createElement("span");
+    headerText.textContent = "Navigation";
+    headerText.style.width = "100%";
+    headerText.style.fontWeight = "900";
+    headerText.style.fontVariant = "small-caps";
+    headerBox.appendChild(headerText);
 
-    const reset = document.createElement("button");
-    reset.textContent = "🔄";
-    reset.title = "Reset navigation to show hidden buttons";
-    reset.style.marginLeft = "8px";
-    reset.style.padding = "0";
-    reset.style.width = "25px";
-    reset.style.height = "25px";
-    reset.style.border = "none";
-    reset.style.background = "#ffffff40";
-    reset.style.fontSize = "14px";
-    reset.style.fontWeight = "900";
-    reset.style.cursor = "pointer";
-    reset.addEventListener("click", (e) => {
+    // Add a Reset button to the header
+    const resetButton = document.createElement("button");
+    // Apply button defaults
+    Object.assign(resetButton.style, navButtonConfig.defaults);
+
+    // Apply reset button defaults
+    Object.assign(resetButton, navButtonConfig.resetButton);
+
+    resetButton.addEventListener("click", (e) => {
       e.stopPropagation();
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(COLLAPSE_KEY);
+      localStorage.removeItem(SIDE_KEY);
+      localStorage.removeItem(VISIBLE_KEY);
       location.reload();
     });
 
-    // Add a hide button to the header
+    // Add a Hide button to the header
     const hideButton = document.createElement("button");
-    hideButton.textContent = "⛔";
-    hideButton.title = "Hide/Show Navigation";
-    hideButton.style.border = "none";
-    hideButton.style.background = "#ffffff40";
-    hideButton.style.marginLeft = "8px";
-    hideButton.style.padding = "0";
-    hideButton.style.fontSize = "14px";
-    hideButton.style.width = "25px";
-    hideButton.style.height = "25px";
-    hideButton.style.fontWeight = "900";
-    hideButton.style.cursor = "pointer";
+
+    // Apply button defaults
+    Object.assign(hideButton.style, navButtonConfig.defaults);
+
+    // Get the current side from localStorage
+
+    // Function to toggle visibility
+    const toggleVisibility = (show) => {
+      show = show !== undefined ? show : true;
+      if (!show) {
+        // Apply hide defaults
+        Object.assign(hideButton, navButtonConfig.hideButton.hide);
+
+        // Apply collapsed styles
+        Object.assign(navContainer.style, navContainerConfig.collapsed);
+        outerWrapper.style.gridTemplateColumns = "1fr"; // Collapse layout
+      } else {
+        // Apply show defaults
+        Object.assign(hideButton, navButtonConfig.hideButton.show);
+
+        // Restore styles
+        Object.assign(navContainer.style, navContainerConfig.defaults);
+      }
+    };
+
+    // Set initial visibility based on localStorage
+    toggleVisibility(isVisible);
+
     hideButton.addEventListener("click", (e) => {
       e.stopPropagation();
-      // If "Hide" shrink navContainer to height of Header and position absolute (top 0, right 0). Change column template of outerWrapper to 1fr.
-      if (navContainer.style.height === "100vh") {
-        hideButton.textContent = "👀";
-        navContainer.style.height = "35px"; // Shrink to header height
-        navContainer.style.position = "absolute";
-        navContainer.style.top = "0";
-        navContainer.style.right = "0";
-        navContainer.style.overflow = "hidden";
-        outerWrapper.style.gridTemplateColumns = "1fr";
-      } else {
-        hideButton.textContent = "⛔";
-        navContainer.style.height = "100vh"; // Restore full height
-        navContainer.style.position = "sticky";
-        outerWrapper.style.gridTemplateColumns = "1fr max-content"; // Restore original layout
-        navContainer.style.overflow = "hidden auto"; // Restore overflow
-      }
-      
+
+      // Toggle visibility
+      const isCurrentlyVisible = navContainer.style.height === "100vh";
+      toggleVisibility(!isCurrentlyVisible);
+
+      // Store the visibility state in localStorage
+      localStorage.setItem("bvs-nav-visible", navContainer.style.height === "100vh" ? "1" : "0");
     });
 
-    header.appendChild(title);
-    header.appendChild(reset);
-    header.appendChild(hideButton);
+    // Add a Switch Sides button to the header
+    const switchSides = document.createElement("button");
 
-    return header;
+    // Apply button defaults
+    Object.assign(switchSides.style, navButtonConfig.defaults);
+
+    const switchSidesHandler = (toSide) => {
+      toSide = toSide !== undefined ? toSide : side || false;
+      if (!toSide) {
+        // Apply left side defaults
+        Object.assign(switchSides, navButtonConfig.switchButton.left);
+        // Restore container for left side
+        Object.assign(navContainer.style, navContainerConfig.left);
+        // Restore outer wrapper for right side
+        Object.assign(outerWrapper.style, outerWrapperConfig.right);
+      } else {
+        // Apply right side defaults
+        Object.assign(switchSides, navButtonConfig.switchButton.right);
+        // Restore container for right side
+        Object.assign(navContainer.style, navContainerConfig.right);
+        // Restore outer wrapper for left side
+        Object.assign(outerWrapper.style, outerWrapperConfig.left);
+      }
+    };
+
+    switchSidesHandler(side);
+
+    switchSides.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      let currentSide = localStorage.getItem(SIDE_KEY);
+      // Convert to boolean: "1" is true (right), "0" is false (left), fallback to side or false
+      if (currentSide === "1") {
+        currentSide = true;
+      } else if (currentSide === "0") {
+        currentSide = false;
+      } else {
+        currentSide = !!side;
+      }
+
+      switchSidesHandler(!currentSide);
+
+      // Store the side in localStorage ("1" for right, "0" for left)
+      localStorage.setItem(SIDE_KEY, !currentSide ? "1" : "0");
+    });
+
+    // Append elements to the header
+    headerBox.appendChild(resetButton);
+    headerBox.appendChild(switchSides);
+    headerBox.appendChild(hideButton);
+
+    return headerBox;
   }
 
   navHeader.appendChild(createNavHeader());
 
   const navBody = document.createElement("div");
   navBody.id = "bvs-nav-body";
+  navBody.className = "bvs-nav-body";
   navBody.style.height = "100%";
   navBody.style.overflowX = "hidden";
   navBody.style.overflowY = "auto";
@@ -893,19 +1016,15 @@
 
   navContainer.appendChild(navHeader);
   navContainer.appendChild(navBody);
+
   renderButtons(allButtons, unifiedForm);
+
   navBody.appendChild(unifiedForm);
-  let outerWrapper = document.getElementById("wrapper") || document.body;
+
   if (outerWrapper) {
     outerWrapper.appendChild(navContainer);
-    outerWrapper.style.gridTemplateRows = "1fr max-content";
-    outerWrapper.style.display = "grid";
-    outerWrapper.style.justifyContent = "space-between";
-    outerWrapper.style.justifyItems = "center";
-    outerWrapper.style.height = "100%";
-    outerWrapper.style.width = "100%";
-    outerWrapper.style.gridTemplateColumns = "1fr max-content";
-    outerWrapper.style.overflow = "hidden";
+    // Apply outer wrapper defaults
+    Object.assign(outerWrapper.style, outerWrapperConfig.defaults);
     if (outerWrapper.children.length > 0) {
       outerWrapper.children[0].style.overflow = "auto";
       outerWrapper.children[0].style.height = "100%";
@@ -925,17 +1044,24 @@
   }
 
   // — Helpers —
-  function two(n) {
+  function two00(n) {
     return n < 10 ? "0" + n : "" + n;
   }
+  function two_(n) {
+    return n < 10 ? " " + n : "" + n;
+  }
+
+  // — Format milliseconds to HH:MM:SS —
   function msToHMS(ms) {
     let s = Math.max(0, Math.ceil(ms / 1000));
     const h = Math.floor(s / 3600);
     s %= 3600;
     const m = Math.floor(s / 60);
     s %= 60;
-    return `${two(h)}:${two(m)}:${two(s)}`;
+    return `${two_(h)}:${two00(m)}:${two00(s)}`;
   }
+
+  // — Format Date to HH:MM:SS with optional 24h/12h format —
   function fmtDate(d, useUTC, _is24Override) {
     d = new Date(d);
     if (isNaN(d.getTime())) {
@@ -946,11 +1072,11 @@
     const M = useUTC ? d.getUTCMinutes() : d.getMinutes();
     const S = useUTC ? d.getUTCSeconds() : d.getSeconds();
     if (_is24Override !== undefined ? _is24Override : is24) {
-      return `${two(H)}:${two(M)}:${two(S)} H `;
+      return `${two00(H)}:${two00(M)}:${two00(S)} H `;
     } else {
       const suffix = H >= 12 ? "PM" : "AM";
       const h12 = H % 12 || 12;
-      return `${two(h12)}:${two(M)}:${two(S)} ${suffix}`;
+      return `${two_(h12)}:${two00(M)}:${two00(S)} ${suffix}`;
     }
   }
 
@@ -960,6 +1086,9 @@
     const utcMs = now.getTime();
     return utcMs - 5 * 3600000;
   }
+
+  // - Get is24 preference from localStorage or default to false -
+  is24 = localStorage.getItem("bvs-clock-24h") === "1";
 
   // — Dark Hour logic —
   function parseTokens(tokens, base) {
@@ -981,6 +1110,7 @@
       .sort((a, b) => a - b);
   }
 
+  // — Get next Dark Hour from tokens —
   function getNextDarkHour() {
     const srvNow = getServerDate();
     const list = parseTokens(darkTokens, srvNow);
@@ -1006,9 +1136,9 @@
     fontFamily: "monospace",
     fontSize: "10px",
     color: "#00ff00bb",
-    textAlign: "right",
     cursor: "pointer",
   });
+
   // 5 rows: server, local, utc, dayroll, dark hour
   const [srvEl, locEl, utcEl, drEl, dhEl] = Array(5)
     .fill()
@@ -1019,8 +1149,15 @@
       box.appendChild(d);
       return d;
     });
+
   // click to toggle 24h/12h
-  box.addEventListener("click", () => (is24 = !is24));
+  box.addEventListener("click", () => {
+    is24 = !is24;
+    // Save the preference in localStorage
+    localStorage.setItem("bvs-clock-24h", is24 ? "1" : "0");
+  });
+
+  // - Append the Clock Box to the Navigation Container -
   navContainer.appendChild(box);
 
   // Insert <hr> before Dayroll and <hr> before Dark Hour
@@ -1035,21 +1172,21 @@
   hr2.style.borderWidth = "2px 0 0 0";
   box.insertBefore(hr2, dhEl);
 
-  // — Update Loop —
+  // — Clock Update Loop —
   (function update() {
     const now = new Date();
     const srvNow = getServerDate();
-    srvEl.textContent = `Server Time: ${fmtDate(srvNow, true)}`;
-    locEl.textContent = `Local Time: ${fmtDate(now, false)}`;
-    utcEl.textContent = `UTC Time: ${fmtDate(now, true)}`;
+    srvEl.textContent = `   Server Time:  ${fmtDate(srvNow, true)}`;
+    locEl.textContent = `    Local Time:  ${fmtDate(now, false)}`;
+    utcEl.textContent = `      UTC Time:  ${fmtDate(now, true)}`;
 
     const nextDH = getNextDarkHour();
     // Format Dark Hour as XX AM/PM or XX:00 H
     const dhTime = nextDH ? fmtDate(nextDH, true, false) : "—";
-    dhEl.textContent = nextDH ? `Next Dark Hour: ${dhTime.replaceAll(":00", "")}      \nNDH Countdown: ${msToHMS(nextDH - srvNow)}   ` : `Next Dark Hour: —`;
+    dhEl.textContent = nextDH ? `Next Dark Hour:  ${dhTime.replaceAll(":00", "")}\n NDH Countdown:  ${msToHMS(nextDH - srvNow)}` : `Next Dark Hour:  —`;
 
     const nextDR = getNextDayroll();
-    drEl.textContent = `Dayroll in: ${msToHMS(nextDR - srvNow)}   `;
+    drEl.textContent = `    Dayroll in:  ${msToHMS(nextDR - srvNow)}   `;
 
     setTimeout(update, 1000);
   })();
