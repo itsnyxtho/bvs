@@ -152,6 +152,12 @@
     "Genin Schoolyard": "Fancy",
     "Storage Room": "Flops",
   };
+  const locationCharacters = {
+    "Ramen Shop": "Baby",
+    "Training Grounds": "Smokey",
+    "Genin Schoolyard": "Tabby",
+    "Storage Room": "Erwin",
+  };
 
   [...locationSelect.options].forEach((opt) => {
     const name = opt.textContent.split("::")[1]?.trim();

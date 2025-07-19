@@ -5,7 +5,7 @@
 // @version      0.0.4
 // @description  Combines and styles BvS minimenu into grouped, collapsible, persistent buttons with hide support per section and screen
 // @include      http*://*animecubed*/billy/bvs/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=animecubedgaming.com
+// @exclude      http*://*animecubed*/billy/bvs/zombjasonar.html
 // @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
 // @grant        none
 // ==/UserScript==
@@ -340,15 +340,15 @@
 
   // === 🗺️ Section Map by ID ===
   const sectionMap = {
-    sectionsOrder: ["", "Settings", "Daily", "Village", "Items", "Combat", "Games", "Pets", "BvS", "Other", "Links", "Hidden"], // Order of sections in the menu
+    sectionsOrder: ["Root", "Settings", "Daily", "Village", "Items", "Combat", "Games", "Pets", "BvS", "Other", "Links", "Hidden"], // Order of sections in the menu
     // TOP LEVEL
-    "minimenu-main": { section: "", order: 1 }, // Main Page
-    "minimenu-village": { section: "", order: 2 }, // Village
-    "minimenu-party-house": { section: "", order: 3 }, // Party House
-    "minimenu-team": { section: "", order: 4 }, // Team
-    "minimenu-missions": { section: "", order: 5 }, // Missions
-    "minimenu-quests": { section: "", order: 6 }, // Quests
-    "btn-trophy-room": { section: "", order: 7 }, // Trophy Room
+    "minimenu-main": { section: "Root", order: 1 }, // Main Page
+    "minimenu-village": { section: "Root", order: 2 }, // Village
+    "minimenu-party-house": { section: "Root", order: 3 }, // Party House
+    "minimenu-team": { section: "Root", order: 4 }, // Team
+    "minimenu-missions": { section: "Root", order: 5 }, // Missions
+    "minimenu-quests": { section: "Root", order: 6 }, // Quests
+    "btn-trophy-room": { section: "Root", order: 7 }, // Trophy Room
     // SETTINGS
     "minimenu-summons": { section: "Settings", order: 1 }, // Summons
     "btn-themes-crank": { section: "Settings", order: 2 }, // Themes & Crank
@@ -452,13 +452,145 @@
   const menuTables = [...document.querySelectorAll(".minimenu, .minimenub")];
   if (menuTables.length === 0) return;
 
+  // -STR- Styling Helper Functions -----
+  function getSectionBg(section) {
+    switch ((section || "Root").toLowerCase()) {
+      case "games":
+        return `url("/billy/layout/scrollteal.jpg")`;
+      case "special":
+        return `url("/billy/layout/scrolldark.jpg")`;
+      case "root":
+        return `url("/billy/layout/scrolldark2.jpg")`;
+      default:
+        return `url("/billy/layout/scrollbg.jpg")`;
+    }
+  }
+
+  function getSectionColor(section) {
+    switch ((section || "Root").toLowerCase()) {
+      case "games":
+      case "special":
+      case "root":
+        return "#fff";
+      default:
+        return "#121212";
+    }
+  }
+  // -END- Styling Helper Functions -----
+
+  // -STR- Additional Buttons Handling -----
+  // Additional forms to be added as buttons to the menu, section Daily, if they exist on the current page.
+  const additionalDailyFormsNames = ["videochallenge", "givefood", "bonusget"];
+
+  // These forms are not included in the customButtons array because they require special handling:
+  // - Video Challenge: Button text is to be "CATS!". Requires the `videoroll` input to be set to "yes" before submission.
+  // - Give Food: Button text is to be "FOOD!". Requires the page `https://thehungersite.greatergood.com/clicktogive/ths/home` to be opened in a new tab
+  //   before submission.
+  // - Bonus Get: Button text is to be "CODE!". Requires a code from `https://www.animecubed.com/index.shtml` to be extracted and set in the `bonusget` input field
+  //   Code is parsed from text `Billy Vs. SNAKEMAN Bonus Code: #####`, found on the index page.
+
+  // Video Challenge Answer
+  const videoChallengeAnswer = "yes";
+
+  // Give Food URL
+  const foodURL = `https://thehungersite.greatergood.com/clicktogive/ths/home`;
+
+  // Code URL
+  const codeURL = `https://www.animecubed.com/index.shtml`;
+
+  // Function to extract the bonus code from the index page through a proxy url.
+  let retries = 0;
+  const maxRetries = 3;
+  const fetchBonusCode = async () => {
+    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(codeURL);
+
+    fetch(proxyUrl)
+      .then((response) => response.text())
+      .then((html) => {
+        const match = html.match(/Billy Vs\. SNAKEMAN Bonus Code:\s*(\d+)/i);
+        if (match) {
+          window.open(codeURL, "_blank");
+          const inputField = document.querySelector('input[name="bonusget"]');
+          inputField.value = match[1];
+          document.bonusget.submit();
+        } else {
+          console.log("Bonus Code not found. Trying again...");
+          // Retry if the code is not found, maximum of 3 retries.
+          if (retries < maxRetries) {
+            retries++;
+            setTimeout(fetchBonusCode, 3000);
+          } else {
+            console.log("Max retries reached. Giving up.");
+          }
+        }
+      })
+      .catch(console.error);
+  };
+
+  // Iterate through additionalDailyFormsNames to create a <div> that contains the three buttons in a row. This <div> is then added to the start of the daily section.
+  const additionalDailyButtons = () => {
+    const dailySection = document.getElementById("sectionDailyBtnWrapper");
+    if (!dailySection) return;
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.display = "flex";
+
+    additionalDailyFormsNames.forEach((formName) => {
+      const form = document.forms[formName];
+      if (!form) return;
+
+      const button = document.createElement("button");
+      button.textContent = formName === "videochallenge" ? "CATS!" : formName === "givefood" ? "FOOD!" : "CODE!";
+
+      button.id = formName === "videochallenge" ? "videoChallengeBtn" : formName === "givefood" ? "giveFoodBtn" : "bonusGetBtn";
+      button.type = "button";
+      button.style.width = "100%";
+      button.style.height = "24px";
+      button.style.padding = "4px 8px";
+      button.style.background = `${getSectionBg("special")} no-repeat center center`;
+      button.style.backgroundSize = "cover";
+      button.style.fontSize = "10px";
+      button.style.fontFamily = "Verdana, sans-serif";
+      button.style.textAlign = "center";
+      button.style.border = "none";
+      button.style.borderRight = formName === "videochallenge" || formName === "givefood" ? "1px solid #631E02" : "none";
+      button.style.borderBottom = "1px solid #631E02";
+      button.style.color = getSectionColor("special");
+      button.style.position = "relative";
+      button.style.fontWeight = "bold";
+      button.style.cursor = "pointer";
+
+      if (formName === "videochallenge") {
+        // Set the input value to 'yes' before submitting
+        button.addEventListener("click", () => {
+          form.videoroll.value = videoChallengeAnswer;
+          form.submit();
+        });
+      } else if (formName === "givefood") {
+        // Open the food URL in a new tab before submitting
+        button.addEventListener("click", () => {
+          window.open(foodURL, "_blank");
+          form.submit();
+        });
+      } else if (formName === "bonusget") {
+        // Fetch the bonus code and submit the form
+        fetchBonusCode();
+      }
+
+      buttonContainer.appendChild(button);
+    });
+
+    dailySection.insertBefore(buttonContainer, dailySection.firstChild);
+  };
+  // - END - Additional Buttons Handling -----
+
   const STORAGE_KEY = "bvs-menu-hidden";
   const COLLAPSE_KEY = "bvs-menu-collapsed";
   const SIDE_KEY = "bvs-nav-side";
   const VISIBLE_KEY = "bvs-nav-visible";
 
   if (!localStorage.getItem(COLLAPSE_KEY)) {
-    const initialCollapsed = ["section-Settings", "section-Daily", "section-Village", "section-Items", "section-Combat", "section-Games", "section-Pets", "section-BvS", "section-Other", "section-Links", "section-Hidden"];
+    const initialCollapsed = ["sectionSettings", "sectionDaily", "sectionVillage", "sectionItems", "sectionCombat", "sectionGames", "sectionPets", "sectionBvS", "sectionOther", "sectionLinks", "sectionHidden"];
     localStorage.setItem(COLLAPSE_KEY, JSON.stringify(initialCollapsed));
   }
 
@@ -472,6 +604,7 @@
 
   function createSectionRow(title, sectionId, isCollapsed, buttonRows) {
     const headerRow = document.createElement("tr");
+    headerRow.id = sectionId;
     const headerCell = document.createElement("td");
     headerCell.colSpan = 2;
     headerCell.style.display = "block";
@@ -487,6 +620,7 @@
     headerCell.style.borderBottom = "1px solid #631E02";
 
     const bodyRow = document.createElement("tr");
+    bodyRow.id = `${sectionId}Body`;
     const bodyCell = document.createElement("td");
     bodyCell.colSpan = 2;
     bodyCell.style.padding = "0";
@@ -494,6 +628,7 @@
     bodyCell.style.overflow = "hidden";
 
     const wrapper = document.createElement("div");
+    wrapper.id = `${sectionId}BtnWrapper`;
     wrapper.style.display = "grid";
     wrapper.style.gridTemplateColumns = "1fr";
     wrapper.style.gap = "0";
@@ -560,19 +695,6 @@
     return { headerRow, bodyRow };
   }
 
-  function getSectionBg(section) {
-    switch ((section || "").toLowerCase()) {
-      case "games":
-        return "/billy/layout/scrollteal.jpg";
-      case "village":
-        return "/billy/layout/scrollbg.jpg";
-      case "":
-        return "/billy/layout/scrolldark.jpg";
-      default:
-        return "/billy/layout/scrolldark2.jpg";
-    }
-  }
-
   function renderButtons(buttons, unifiedForm) {
     const grouped = groupButtonsBySection(buttons);
 
@@ -586,13 +708,13 @@
       const group = grouped[section];
       if (!group) continue;
 
-      const sectionId = `section-${section || "root"}`;
+      const sectionId = `section${section}`;
       const collapsed = collapsedSections.has(sectionId);
       const visibleButtons = group.filter((btn) => !hiddenButtons.has(btn.id));
       const hiddenGroup = group.filter((btn) => hiddenButtons.has(btn.id));
       if (visibleButtons.length === 0 && hiddenGroup.length === 0) continue;
 
-      if (section === "") {
+      if (section === "Root") {
         renderRootButtons(visibleButtons, tbody, unifiedForm, buttons);
         continue;
       }
@@ -629,7 +751,7 @@
       const cell = document.createElement("td");
       cell.style.padding = "0";
 
-      const button = createButtonElement(btn, unifiedForm, allButtons, "#833102", "#fff");
+      const button = createButtonElement(btn, unifiedForm, allButtons, getSectionBg(btn.section), getSectionColor(btn.section));
       cell.appendChild(button);
       row.appendChild(cell);
       tbody.appendChild(row);
@@ -642,23 +764,21 @@
       if (document.getElementById(btn.id)) continue;
 
       const row = document.createElement("div");
-      const color = btn.section === "Village" ? "#121212" : "#fff";
-      const bg = btn.section === "" ? "#833102" : "#444";
-      const button = createButtonElement(btn, unifiedForm, allButtons, bg, color);
+      const button = createButtonElement(btn, unifiedForm, allButtons, getSectionBg(btn.section), getSectionColor(btn.section));
       row.appendChild(button);
       buttonRows.push(row);
     }
     return buttonRows;
   }
 
-  function createButtonElement(btn, unifiedForm, allButtons, bgColor, textColor) {
+  function createButtonElement(btn, unifiedForm, allButtons, bg, textColor) {
     const button = document.createElement("button");
     button.id = btn.id;
     button.type = "button";
     button.style.width = "100%";
     button.style.height = "24px";
     button.style.padding = "4px 8px";
-    button.style.background = `${bgColor} url(${getSectionBg(btn.section)})`;
+    button.style.background = `${bg} no-repeat center center`;
     button.style.backgroundSize = "cover";
     button.style.fontSize = "10px";
     button.style.fontFamily = "Verdana, sans-serif";
@@ -731,7 +851,7 @@
     ...btn,
     method: btn.method || "post",
     fields: btn.hiddenFields || [],
-    section: sectionMap[btn.id]?.section || btn.section || "",
+    section: sectionMap[btn.id]?.section || btn.section || "Root",
     order: sectionMap[btn.id]?.order || btn.order || 0,
   }));
 
@@ -739,13 +859,13 @@
   const filteredMenuItems = menuItems.filter((item) => !normalizedCustomButtons.some((c) => c.label === item.label && c.action === item.action));
   const allButtons = [...filteredMenuItems, ...normalizedCustomButtons].map((btn) => ({
     ...btn,
-    section: sectionMap[btn.id]?.section || btn.section || "",
+    section: sectionMap[btn.id]?.section || btn.section || "Root",
     order: sectionMap[btn.id]?.order || btn.order || 0,
   }));
 
   // Restore stored states
-  const side = localStorage.getItem(SIDE_KEY) === "1";
-  const isVisible = localStorage.getItem(VISIBLE_KEY) !== "0";
+  let side = localStorage.getItem(SIDE_KEY) === "1";
+  let isVisible = localStorage.getItem(VISIBLE_KEY) !== "0";
 
   // Get Elements
   let outerWrapper = document.getElementById("wrapper") || document.body;
@@ -755,8 +875,6 @@
       position: "sticky",
       boxSizing: "border-box",
       background: "#111",
-      top: "0px",
-      right: "0px",
       border: "1px solid #631E02",
       borderTop: "none",
       borderBottom: "none",
@@ -777,6 +895,14 @@
       overflow: "hidden",
       gridTemplateRows: "35px 0 0",
     },
+    left: {
+      top: "0px",
+      left: "0px",
+    },
+    right: {
+      top: "0px",
+      right: "0px",
+    },
   };
   navContainerConfig.left = {
     gridColumn: "1",
@@ -787,7 +913,6 @@
 
   const headerBoxConfig = {
     background: "#300",
-    cursor: "pointer",
     padding: "4px 8px",
     userSelect: "none",
     display: "grid",
@@ -803,7 +928,8 @@
   const navButtonConfig = {
     defaults: {
       border: "none",
-      background: "#ffffff40",
+      background: "#ffffff1a",
+      borderRadius: "4px",
       marginLeft: "8px",
       padding: "0",
       fontSize: "14px",
@@ -818,7 +944,7 @@
     },
     hideButton: {
       show: {
-        textContent: "👀",
+        textContent: "👁️",
         title: "Show Navigation",
       },
       hide: {
@@ -829,11 +955,11 @@
     switchButton: {
       left: {
         textContent: "⏭️",
-        title: "Switch Navigation to the Left Side",
+        title: "Switch Navigation to the Right Side",
       },
       right: {
         textContent: "⏮️",
-        title: "Switch Navigation to the Right Side",
+        title: "Switch Navigation to the Left Side",
       },
     },
   };
@@ -848,6 +974,9 @@
       overflow: "hidden",
       margin: "0",
       padding: "0",
+    },
+    collapsed: {
+      gridTemplateColumns: "1fr",
     },
     left: {
       gridTemplateColumns: "1fr " + navContainerConfig.defaults.width,
@@ -903,24 +1032,47 @@
     // Apply button defaults
     Object.assign(hideButton.style, navButtonConfig.defaults);
 
-    // Get the current side from localStorage
+    // Add a Switch Sides button to the header
+    const switchSides = document.createElement("button");
 
     // Function to toggle visibility
     const toggleVisibility = (show) => {
       show = show !== undefined ? show : true;
       if (!show) {
+        switchSides.disabled = true;
+        switchSides.style.cursor = "not-allowed";
+
         // Apply hide defaults
-        Object.assign(hideButton, navButtonConfig.hideButton.hide);
+        Object.assign(hideButton, navButtonConfig.hideButton.show);
 
         // Apply collapsed styles
         Object.assign(navContainer.style, navContainerConfig.collapsed);
-        outerWrapper.style.gridTemplateColumns = "1fr"; // Collapse layout
+        Object.assign(outerWrapper.style, outerWrapperConfig.collapsed);
+
+        // Apply side
+        if (side) {
+          Object.assign(navContainer.style, navContainerConfig.right);
+        } else {
+          Object.assign(navContainer.style, navContainerConfig.left);
+        }
       } else {
+        switchSides.disabled = false;
+        switchSides.style.cursor = "pointer";
+
         // Apply show defaults
-        Object.assign(hideButton, navButtonConfig.hideButton.show);
+        Object.assign(hideButton, navButtonConfig.hideButton.hide);
 
         // Restore styles
         Object.assign(navContainer.style, navContainerConfig.defaults);
+
+        // Restore side
+        if (side) {
+          Object.assign(navContainer.style, navContainerConfig.right);
+          Object.assign(outerWrapper.style, outerWrapperConfig.left);
+        } else {
+          Object.assign(navContainer.style, navContainerConfig.left);
+          Object.assign(outerWrapper.style, outerWrapperConfig.right);
+        }
       }
     };
 
@@ -937,9 +1089,6 @@
       // Store the visibility state in localStorage
       localStorage.setItem("bvs-nav-visible", navContainer.style.height === "100vh" ? "1" : "0");
     });
-
-    // Add a Switch Sides button to the header
-    const switchSides = document.createElement("button");
 
     // Apply button defaults
     Object.assign(switchSides.style, navButtonConfig.defaults);
@@ -961,6 +1110,7 @@
         // Restore outer wrapper for left side
         Object.assign(outerWrapper.style, outerWrapperConfig.left);
       }
+      side = toSide;
     };
 
     switchSidesHandler(side);
@@ -1032,6 +1182,10 @@
     }
   }
 
+  // Get and append the additional daily buttons
+  additionalDailyButtons();
+
+  // ----- CLOCK BOX SECTION -----
   // — State & Load Dark Hour tokens —
   let is24 = true;
   let darkTokens = JSON.parse(localStorage.getItem("bvs-dark-hours") || "[]");
@@ -1183,11 +1337,12 @@
     const nextDH = getNextDarkHour();
     // Format Dark Hour as XX AM/PM or XX:00 H
     const dhTime = nextDH ? fmtDate(nextDH, true, false) : "—";
-    dhEl.textContent = nextDH ? `Next Dark Hour:  ${dhTime.replaceAll(":00", "")}\n NDH Countdown:  ${msToHMS(nextDH - srvNow)}` : `Next Dark Hour:  —`;
+    dhEl.textContent = nextDH ? `Next Dark Hour:  ${dhTime.replaceAll(":00", "")}\n        NDH in:  ${msToHMS(nextDH - srvNow)}` : `Next Dark Hour:  —`;
 
     const nextDR = getNextDayroll();
     drEl.textContent = `    Dayroll in:  ${msToHMS(nextDR - srvNow)}   `;
 
     setTimeout(update, 1000);
   })();
+  // -END- CLOCK BOX SECTION -----
 })();
