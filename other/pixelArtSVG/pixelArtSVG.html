@@ -1,9 +1,13 @@
 <div class="pixel-art-svg">
   <h1 class="pas--title">Pixel Art SVG Maker</h1>
+  <div id="pas--input-container">
   <div class="pas--file-input">
     <input type="file" id="imgLoader" accept="image/*" />
   </div>
-  <button id="downloadRaw" title="Download raw svg. Click the preview image for configured download." class="pas--download-button">Download Raw SVG</button>
+  <button id="downloadRaw" title="Download raw svg. Click the preview image for configured download." class="pas--download-button"><svg viewBox="0 0 384 512" width="100" title="file-code">
+  <path fill="var(--fg)" d="M384 121.941V128H256V0h6.059c6.365 0 12.47 2.529 16.971 7.029l97.941 97.941A24.005 24.005 0 0 1 384 121.941zM248 160c-13.2 0-24-10.8-24-24V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248zM123.206 400.505a5.4 5.4 0 0 1-7.633.246l-64.866-60.812a5.4 5.4 0 0 1 0-7.879l64.866-60.812a5.4 5.4 0 0 1 7.633.246l19.579 20.885a5.4 5.4 0 0 1-.372 7.747L101.65 336l40.763 35.874a5.4 5.4 0 0 1 .372 7.747l-19.579 20.884zm51.295 50.479l-27.453-7.97a5.402 5.402 0 0 1-3.681-6.692l61.44-211.626a5.402 5.402 0 0 1 6.692-3.681l27.452 7.97a5.4 5.4 0 0 1 3.68 6.692l-61.44 211.626a5.397 5.397 0 0 1-6.69 3.681zm160.792-111.045l-64.866 60.812a5.4 5.4 0 0 1-7.633-.246l-19.58-20.885a5.4 5.4 0 0 1 .372-7.747L284.35 336l-40.763-35.874a5.4 5.4 0 0 1-.372-7.747l19.58-20.885a5.4 5.4 0 0 1 7.633-.246l64.866 60.812a5.4 5.4 0 0 1-.001 7.879z" />
+</svg>Download Raw SVG</button>
+  </div>
   <hr style="width: calc(100% - 4px);">
   <div class="pas--settings">
     <h2>Customization Options & Preview</h2>
@@ -26,7 +30,7 @@
         <input type="range" id="opacity" min="0" max="100" value="100">
       </label>
       <label>Scale:
-        <input type="number" id="scale" step="0.25" min="0.25" value="1">
+        <input type="number" id="scale" step="0.5" min="0.5" value="1">
       </label>
       <label>
         <input type="checkbox" id="simplify"> Simplify
@@ -34,5 +38,12 @@
     </fieldset>
   </div>
   <div id="svgPreview" class="pas--svg-preview"></div>
-  <button onclick="copySvgToClipboard(el.svgPreview.querySelector(`svg`));">Copy to Clipboard</button>
+  <div class="pas--actions">
+  <button id="copyPngBtn"><svg viewBox="0 0 384 512" width="100" title="clipboard">
+  <path fill="var(--bg)" d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z" />
+</svg>Copy SVG as PNG to Clipboard</button>
+  <button id="downloadPngBtn"><svg viewBox="0 0 384 512" width="100" title="file-download">
+  <path fill="var(--bg)" d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z" />
+</svg> Download PNG</button>
+  </div>
 </div>

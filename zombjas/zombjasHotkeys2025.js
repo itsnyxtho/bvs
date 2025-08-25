@@ -5,7 +5,9 @@
 // @author	    Authority2, taltamir, itsnyxtho
 // @license     MIT
 // @icon        https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
-// @version     3.5
+// @version     3.6
+// @history     3.6    2025 Update to add refresh action to the end of the action list.
+//                     version by itsnyxtho
 // @history     3.5    2025 Update to get it working. Changes to visual display of hotkeys.
 //                     version by itsnyxtho
 // @history		3.0    Removed searching from contextual action button. Tweaked
@@ -143,6 +145,8 @@
     } else if (document.forms.namedItem("zhpheal")) {
       //Check if there is a Heal HP button
       submit_form("zhpheal"); //Heal HP (self)
+    } else {
+      submit_form("ref"); //If no actions are available, submit the form to refresh the page.
     }
   }
 
@@ -155,7 +159,7 @@ Use numpad keys (<span style="color:deeppink">78946123</span>) or keys around S 
 Press <span style="color:deeppink">numpad 5</span> or <span style="color:deeppink">S</span> key for actions in order:
 
     <span style="color:forestgreen">Heal Infection</span> > <span style="color:crimson">Thriller</span> > <span style="color:darkkhaki">Bargler</span> >
-    <span style="color:mediumpurple">Thumper</span> > <span style="color:tomato">Nom</span> > <span style="color:darkseagreen">Zombja</span> > <span style="color:springgreen">Heal HP</span>
+    <span style="color:mediumpurple">Thumper</span> > <span style="color:tomato">Nom</span> > <span style="color:darkseagreen">Zombja</span> > <span style="color:springgreen">Heal HP</span> > <span style="color:turquoise">Refresh</span>
 
 Press <span style="color:deeppink">R</span> or <span style="color:deeppink">L</span> to search.
 </div>

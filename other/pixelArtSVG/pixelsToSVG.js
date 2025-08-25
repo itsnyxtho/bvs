@@ -1,844 +1,502 @@
-// https://codepen.io/itsnyxtho/pen/pvJqzwx
+(() => {
+  // -----------------------------
+  // 1) State & DOM
+  // -----------------------------
+  const el = {
+    imgLoader: document.getElementById("imgLoader"),
+    svgPreview: document.getElementById("svgPreview"),
+    bgColor: document.getElementById("bgColor"),
+    bgTransparent: document.getElementById("bgTransparent"),
+    bgAlpha: document.getElementById("bgAlpha"),
+    fileName: document.getElementById("fileName"),
+    opacity: document.getElementById("opacity"),
+    scale: document.getElementById("scale"),
+    simplify: document.getElementById("simplify"),
+    downloadRaw: document.getElementById("downloadRaw"),
+    // optional (only if you added them in HTML)
+    copyPngBtn: document.getElementById("copyPngBtn"),
+    downloadPngBtn: document.getElementById("downloadPngBtn"),
+  };
 
-const itsnyxthoSVG = `
-<?xml version="1.0" encoding="UTF-8"?>
-<svg  height="20" width="176" shape-rendering="crispEdges" version="1.1" viewBox="0 0 176 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
- <a transform="matrix(.31667 0 0 1.25 157 0)" target="_blank" xlink:href="https://github.com/itsnyxtho">
-  <rect width="60" height="16" fill-opacity="0" onclick="window.open('https://github.com/itsnyxtho','_blank')"/>
- </a>
- <a transform="matrix(7.85,0,0,1.25,-471,0)" target="_blank" xlink:href="https://codepen.io/itsnyxtho">
-  <rect x="60" width="20" height="16" fill-opacity="0" onclick="window.open('https://codepen.io/itsnyxtho','_blank')"/>
- </a>
- <g transform="translate(0,2)" shape-rendering="crispEdges">
-  <g fill="#14182e">
-   <rect x="2" y="5" width="1" height="1"/>
-   <rect x="3" y="5" width="1" height="1"/>
-   <rect x="4" y="5" width="1" height="1"/>
-   <rect x="7" y="5" width="1" height="1"/>
-   <rect x="20" y="5" width="1" height="1"/>
-   <rect x="27" y="5" width="1" height="1"/>
-   <rect x="28" y="5" width="1" height="1"/>
-   <rect x="35" y="5" width="1" height="1"/>
-   <rect x="43" y="5" width="1" height="1"/>
-   <rect x="44" y="5" width="1" height="1"/>
-   <rect x="45" y="5" width="1" height="1"/>
-   <rect x="47" y="5" width="1" height="1"/>
-   <rect x="51" y="5" width="1" height="1"/>
-   <rect x="54" y="5" width="1" height="1"/>
-   <rect x="55" y="5" width="1" height="1"/>
-   <rect x="56" y="5" width="1" height="1"/>
-   <rect x="62" y="5" width="1" height="1"/>
-   <rect x="66" y="5" width="1" height="1"/>
-   <rect x="73" y="5" width="1" height="1"/>
-   <rect x="2" y="6" width="1" height="1"/>
-   <rect x="5" y="6" width="1" height="1"/>
-   <rect x="9" y="6" width="1" height="1"/>
-   <rect x="13" y="6" width="1" height="1"/>
-   <rect x="16" y="6" width="1" height="1"/>
-   <rect x="17" y="6" width="1" height="1"/>
-   <rect x="20" y="6" width="1" height="1"/>
-   <rect x="26" y="6" width="1" height="1"/>
-   <rect x="29" y="6" width="1" height="1"/>
-   <rect x="31" y="6" width="1" height="1"/>
-   <rect x="33" y="6" width="1" height="1"/>
-   <rect x="35" y="6" width="1" height="1"/>
-   <rect x="36" y="6" width="1" height="1"/>
-   <rect x="42" y="6" width="1" height="1"/>
-   <rect x="47" y="6" width="1" height="1"/>
-   <rect x="51" y="6" width="1" height="1"/>
-   <rect x="53" y="6" width="1" height="1"/>
-   <rect x="62" y="6" width="1" height="1"/>
-   <rect x="63" y="6" width="1" height="1"/>
-   <rect x="65" y="6" width="1" height="1"/>
-   <rect x="66" y="6" width="1" height="1"/>
-   <rect x="69" y="6" width="1" height="1"/>
-   <rect x="70" y="6" width="1" height="1"/>
-   <rect x="73" y="6" width="1" height="1"/>
-   <rect x="76" y="6" width="1" height="1"/>
-   <rect x="79" y="6" width="1" height="1"/>
-   <rect x="80" y="6" width="1" height="1"/>
-   <rect x="83" y="6" width="1" height="1"/>
-   <rect x="85" y="6" width="1" height="1"/>
-   <rect x="2" y="7" width="1" height="1"/>
-   <rect x="5" y="7" width="1" height="1"/>
-   <rect x="7" y="7" width="1" height="1"/>
-   <rect x="10" y="7" width="1" height="1"/>
-   <rect x="12" y="7" width="1" height="1"/>
-   <rect x="15" y="7" width="1" height="1"/>
-   <rect x="18" y="7" width="1" height="1"/>
-   <rect x="20" y="7" width="1" height="1"/>
-   <rect x="26" y="7" width="1" height="1"/>
-   <rect x="29" y="7" width="1" height="1"/>
-   <rect x="31" y="7" width="1" height="1"/>
-   <rect x="32" y="7" width="1" height="1"/>
-   <rect x="35" y="7" width="1" height="1"/>
-   <rect x="43" y="7" width="1" height="1"/>
-   <rect x="44" y="7" width="1" height="1"/>
-   <rect x="47" y="7" width="1" height="1"/>
-   <rect x="51" y="7" width="1" height="1"/>
-   <rect x="53" y="7" width="1" height="1"/>
-   <rect x="55" y="7" width="1" height="1"/>
-   <rect x="56" y="7" width="1" height="1"/>
-   <rect x="62" y="7" width="1" height="1"/>
-   <rect x="64" y="7" width="1" height="1"/>
-   <rect x="66" y="7" width="1" height="1"/>
-   <rect x="71" y="7" width="1" height="1"/>
-   <rect x="73" y="7" width="1" height="1"/>
-   <rect x="75" y="7" width="1" height="1"/>
-   <rect x="78" y="7" width="1" height="1"/>
-   <rect x="81" y="7" width="1" height="1"/>
-   <rect x="83" y="7" width="1" height="1"/>
-   <rect x="84" y="7" width="1" height="1"/>
-   <rect x="2" y="8" width="1" height="1"/>
-   <rect x="3" y="8" width="1" height="1"/>
-   <rect x="4" y="8" width="1" height="1"/>
-   <rect x="7" y="8" width="1" height="1"/>
-   <rect x="11" y="8" width="1" height="1"/>
-   <rect x="15" y="8" width="1" height="1"/>
-   <rect x="16" y="8" width="1" height="1"/>
-   <rect x="17" y="8" width="1" height="1"/>
-   <rect x="18" y="8" width="1" height="1"/>
-   <rect x="20" y="8" width="1" height="1"/>
-   <rect x="26" y="8" width="1" height="1"/>
-   <rect x="27" y="8" width="1" height="1"/>
-   <rect x="28" y="8" width="1" height="1"/>
-   <rect x="29" y="8" width="1" height="1"/>
-   <rect x="31" y="8" width="1" height="1"/>
-   <rect x="35" y="8" width="1" height="1"/>
-   <rect x="45" y="8" width="1" height="1"/>
-   <rect x="47" y="8" width="1" height="1"/>
-   <rect x="51" y="8" width="1" height="1"/>
-   <rect x="53" y="8" width="1" height="1"/>
-   <rect x="56" y="8" width="1" height="1"/>
-   <rect x="62" y="8" width="1" height="1"/>
-   <rect x="66" y="8" width="1" height="1"/>
-   <rect x="69" y="8" width="1" height="1"/>
-   <rect x="70" y="8" width="1" height="1"/>
-   <rect x="71" y="8" width="1" height="1"/>
-   <rect x="73" y="8" width="1" height="1"/>
-   <rect x="74" y="8" width="1" height="1"/>
-   <rect x="78" y="8" width="1" height="1"/>
-   <rect x="79" y="8" width="1" height="1"/>
-   <rect x="80" y="8" width="1" height="1"/>
-   <rect x="81" y="8" width="1" height="1"/>
-   <rect x="83" y="8" width="1" height="1"/>
-   <rect x="2" y="9" width="1" height="1"/>
-   <rect x="7" y="9" width="1" height="1"/>
-   <rect x="10" y="9" width="1" height="1"/>
-   <rect x="12" y="9" width="1" height="1"/>
-   <rect x="15" y="9" width="1" height="1"/>
-   <rect x="20" y="9" width="1" height="1"/>
-   <rect x="26" y="9" width="1" height="1"/>
-   <rect x="29" y="9" width="1" height="1"/>
-   <rect x="31" y="9" width="1" height="1"/>
-   <rect x="35" y="9" width="1" height="1"/>
-   <rect x="45" y="9" width="1" height="1"/>
-   <rect x="48" y="9" width="1" height="1"/>
-   <rect x="50" y="9" width="1" height="1"/>
-   <rect x="53" y="9" width="1" height="1"/>
-   <rect x="56" y="9" width="1" height="1"/>
-   <rect x="62" y="9" width="1" height="1"/>
-   <rect x="66" y="9" width="1" height="1"/>
-   <rect x="68" y="9" width="1" height="1"/>
-   <rect x="71" y="9" width="1" height="1"/>
-   <rect x="73" y="9" width="1" height="1"/>
-   <rect x="75" y="9" width="1" height="1"/>
-   <rect x="78" y="9" width="1" height="1"/>
-   <rect x="83" y="9" width="1" height="1"/>
-   <rect x="2" y="10" width="1" height="1"/>
-   <rect x="7" y="10" width="1" height="1"/>
-   <rect x="9" y="10" width="1" height="1"/>
-   <rect x="13" y="10" width="1" height="1"/>
-   <rect x="16" y="10" width="1" height="1"/>
-   <rect x="17" y="10" width="1" height="1"/>
-   <rect x="20" y="10" width="1" height="1"/>
-   <rect x="26" y="10" width="1" height="1"/>
-   <rect x="29" y="10" width="1" height="1"/>
-   <rect x="31" y="10" width="1" height="1"/>
-   <rect x="36" y="10" width="1" height="1"/>
-   <rect x="42" y="10" width="1" height="1"/>
-   <rect x="43" y="10" width="1" height="1"/>
-   <rect x="44" y="10" width="1" height="1"/>
-   <rect x="49" y="10" width="1" height="1"/>
-   <rect x="54" y="10" width="1" height="1"/>
-   <rect x="55" y="10" width="1" height="1"/>
-   <rect x="56" y="10" width="1" height="1"/>
-   <rect x="62" y="10" width="1" height="1"/>
-   <rect x="66" y="10" width="1" height="1"/>
-   <rect x="69" y="10" width="1" height="1"/>
-   <rect x="70" y="10" width="1" height="1"/>
-   <rect x="71" y="10" width="1" height="1"/>
-   <rect x="73" y="10" width="1" height="1"/>
-   <rect x="76" y="10" width="1" height="1"/>
-   <rect x="79" y="10" width="1" height="1"/>
-   <rect x="80" y="10" width="1" height="1"/>
-   <rect x="83" y="10" width="1" height="1"/>
-  </g>
-  <g fill="#14182e">
-   <rect x="91" y="4" width="1" height="1"/>
-   <rect x="92" y="4" width="1" height="1"/>
-   <rect x="93" y="4" width="1" height="1"/>
-   <rect x="94" y="4" width="1" height="1"/>
-   <rect x="90" y="5" width="1" height="1"/>
-   <rect x="95" y="5" width="1" height="1"/>
-   <rect x="89" y="6" width="1" height="1"/>
-   <rect x="92" y="6" width="1" height="1"/>
-   <rect x="93" y="6" width="1" height="1"/>
-   <rect x="96" y="6" width="1" height="1"/>
-   <rect x="89" y="7" width="1" height="1"/>
-   <rect x="91" y="7" width="1" height="1"/>
-   <rect x="94" y="7" width="1" height="1"/>
-   <rect x="96" y="7" width="1" height="1"/>
-   <rect x="89" y="8" width="1" height="1"/>
-   <rect x="91" y="8" width="1" height="1"/>
-   <rect x="94" y="8" width="1" height="1"/>
-   <rect x="96" y="8" width="1" height="1"/>
-   <rect x="89" y="9" width="1" height="1"/>
-   <rect x="92" y="9" width="1" height="1"/>
-   <rect x="93" y="9" width="1" height="1"/>
-   <rect x="94" y="9" width="1" height="1"/>
-   <rect x="96" y="9" width="1" height="1"/>
-   <rect x="90" y="10" width="1" height="1"/>
-   <rect x="94" y="10" width="1" height="1"/>
-   <rect x="95" y="10" width="1" height="1"/>
-   <rect x="91" y="11" width="1" height="1"/>
-   <rect x="92" y="11" width="1" height="1"/>
-  </g>
-  <g fill="#14182e">
-   <rect x="100" y="5" width="1" height="1"/>
-   <rect x="102" y="5" width="1" height="1"/>
-   <rect x="125" y="5" width="1" height="1"/>
-   <rect x="128" y="5" width="1" height="1"/>
-   <rect x="102" y="6" width="1" height="1"/>
-   <rect x="103" y="6" width="1" height="1"/>
-   <rect x="106" y="6" width="1" height="1"/>
-   <rect x="107" y="6" width="1" height="1"/>
-   <rect x="109" y="6" width="1" height="1"/>
-   <rect x="110" y="6" width="1" height="1"/>
-   <rect x="111" y="6" width="1" height="1"/>
-   <rect x="114" y="6" width="1" height="1"/>
-   <rect x="117" y="6" width="1" height="1"/>
-   <rect x="119" y="6" width="1" height="1"/>
-   <rect x="123" y="6" width="1" height="1"/>
-   <rect x="125" y="6" width="1" height="1"/>
-   <rect x="126" y="6" width="1" height="1"/>
-   <rect x="128" y="6" width="1" height="1"/>
-   <rect x="134" y="6" width="1" height="1"/>
-   <rect x="135" y="6" width="1" height="1"/>
-   <rect x="100" y="7" width="1" height="1"/>
-   <rect x="102" y="7" width="1" height="1"/>
-   <rect x="105" y="7" width="1" height="1"/>
-   <rect x="109" y="7" width="1" height="1"/>
-   <rect x="112" y="7" width="1" height="1"/>
-   <rect x="114" y="7" width="1" height="1"/>
-   <rect x="117" y="7" width="1" height="1"/>
-   <rect x="120" y="7" width="1" height="1"/>
-   <rect x="122" y="7" width="1" height="1"/>
-   <rect x="125" y="7" width="1" height="1"/>
-   <rect x="128" y="7" width="1" height="1"/>
-   <rect x="129" y="7" width="1" height="1"/>
-   <rect x="130" y="7" width="1" height="1"/>
-   <rect x="133" y="7" width="1" height="1"/>
-   <rect x="136" y="7" width="1" height="1"/>
-   <rect x="100" y="8" width="1" height="1"/>
-   <rect x="102" y="8" width="1" height="1"/>
-   <rect x="106" y="8" width="1" height="1"/>
-   <rect x="109" y="8" width="1" height="1"/>
-   <rect x="112" y="8" width="1" height="1"/>
-   <rect x="114" y="8" width="1" height="1"/>
-   <rect x="117" y="8" width="1" height="1"/>
-   <rect x="121" y="8" width="1" height="1"/>
-   <rect x="125" y="8" width="1" height="1"/>
-   <rect x="128" y="8" width="1" height="1"/>
-   <rect x="131" y="8" width="1" height="1"/>
-   <rect x="133" y="8" width="1" height="1"/>
-   <rect x="136" y="8" width="1" height="1"/>
-   <rect x="100" y="9" width="1" height="1"/>
-   <rect x="102" y="9" width="1" height="1"/>
-   <rect x="107" y="9" width="1" height="1"/>
-   <rect x="109" y="9" width="1" height="1"/>
-   <rect x="112" y="9" width="1" height="1"/>
-   <rect x="115" y="9" width="1" height="1"/>
-   <rect x="116" y="9" width="1" height="1"/>
-   <rect x="117" y="9" width="1" height="1"/>
-   <rect x="120" y="9" width="1" height="1"/>
-   <rect x="122" y="9" width="1" height="1"/>
-   <rect x="125" y="9" width="1" height="1"/>
-   <rect x="128" y="9" width="1" height="1"/>
-   <rect x="131" y="9" width="1" height="1"/>
-   <rect x="133" y="9" width="1" height="1"/>
-   <rect x="136" y="9" width="1" height="1"/>
-   <rect x="100" y="10" width="1" height="1"/>
-   <rect x="103" y="10" width="1" height="1"/>
-   <rect x="105" y="10" width="1" height="1"/>
-   <rect x="106" y="10" width="1" height="1"/>
-   <rect x="109" y="10" width="1" height="1"/>
-   <rect x="112" y="10" width="1" height="1"/>
-   <rect x="117" y="10" width="1" height="1"/>
-   <rect x="119" y="10" width="1" height="1"/>
-   <rect x="123" y="10" width="1" height="1"/>
-   <rect x="126" y="10" width="1" height="1"/>
-   <rect x="128" y="10" width="1" height="1"/>
-   <rect x="131" y="10" width="1" height="1"/>
-   <rect x="134" y="10" width="1" height="1"/>
-   <rect x="135" y="10" width="1" height="1"/>
-   <rect x="115" y="11" width="1" height="1"/>
-   <rect x="116" y="11" width="1" height="1"/>
-  </g>
-  <g transform="translate(-18)">
-   <rect x="164" y="2" width="1" height="1" fill="#686f99"/>
-   <rect x="165" y="2" width="1" height="1" fill="#14182e"/>
-   <rect x="166" y="2" width="1" height="1" fill="#14182e"/>
-   <rect x="167" y="2" width="1" height="1" fill="#686f99"/>
-   <rect x="162" y="3" width="1" height="1" fill="#686f99"/>
-   <rect x="163" y="3" width="1" height="1" fill="#14182e"/>
-   <rect x="164" y="3" width="1" height="1" fill="#2c354d"/>
-   <rect x="165" y="3" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="3" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="167" y="3" width="1" height="1" fill="#2c354d"/>
-   <rect x="168" y="3" width="1" height="1" fill="#14182e"/>
-   <rect x="169" y="3" width="1" height="1" fill="#686f99"/>
-   <rect x="160" y="4" width="1" height="1" fill="#686f99"/>
-   <rect x="161" y="4" width="1" height="1" fill="#14182e"/>
-   <rect x="162" y="4" width="1" height="1" fill="#2c354d"/>
-   <rect x="163" y="4" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="164" y="4" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="165" y="4" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="4" width="1" height="1" fill="#686f99"/>
-   <rect x="167" y="4" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="168" y="4" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="169" y="4" width="1" height="1" fill="#2c354d"/>
-   <rect x="170" y="4" width="1" height="1" fill="#14182e"/>
-   <rect x="171" y="4" width="1" height="1" fill="#686f99"/>
-   <rect x="158" y="5" width="1" height="1" fill="#686f99"/>
-   <rect x="159" y="5" width="1" height="1" fill="#14182e"/>
-   <rect x="160" y="5" width="1" height="1" fill="#2c354d"/>
-   <rect x="161" y="5" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="162" y="5" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="163" y="5" width="1" height="1" fill="#2c354d"/>
-   <rect x="164" y="5" width="1" height="1" fill="#14182e"/>
-   <rect x="165" y="5" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="5" width="1" height="1" fill="#686f99"/>
-   <rect x="167" y="5" width="1" height="1" fill="#2c354d"/>
-   <rect x="168" y="5" width="1" height="1" fill="#2c354d"/>
-   <rect x="169" y="5" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="170" y="5" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="171" y="5" width="1" height="1" fill="#2c354d"/>
-   <rect x="172" y="5" width="1" height="1" fill="#14182e"/>
-   <rect x="173" y="5" width="1" height="1" fill="#686f99"/>
-   <rect x="158" y="6" width="1" height="1" fill="#14182e"/>
-   <rect x="159" y="6" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="160" y="6" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="161" y="6" width="1" height="1" fill="#2c354d"/>
-   <g fill="#14182e">
-    <rect x="162" y="6" width="1" height="1"/>
-    <rect x="163" y="6" width="1" height="1"/>
-    <rect x="164" y="6" width="1" height="1"/>
-   </g>
-   <rect x="165" y="6" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="6" width="1" height="1" fill="#686f99"/>
-   <g fill="#14182e">
-    <rect x="167" y="6" width="1" height="1"/>
-    <rect x="168" y="6" width="1" height="1"/>
-    <rect x="169" y="6" width="1" height="1"/>
-   </g>
-   <rect x="170" y="6" width="1" height="1" fill="#2c354d"/>
-   <rect x="171" y="6" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="172" y="6" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="173" y="6" width="1" height="1" fill="#14182e"/>
-   <rect x="158" y="7" width="1" height="1" fill="#14182e"/>
-   <rect x="159" y="7" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="160" y="7" width="1" height="1" fill="#686f99"/>
-   <rect x="161" y="7" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="162" y="7" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="163" y="7" width="1" height="1" fill="#2c354d"/>
-   <rect x="164" y="7" width="1" height="1" fill="#2c354d"/>
-   <rect x="165" y="7" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="7" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="167" y="7" width="1" height="1" fill="#2c354d"/>
-   <rect x="168" y="7" width="1" height="1" fill="#2c354d"/>
-   <rect x="169" y="7" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="170" y="7" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="171" y="7" width="1" height="1" fill="#686f99"/>
-   <rect x="172" y="7" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="173" y="7" width="1" height="1" fill="#14182e"/>
-   <rect x="158" y="8" width="1" height="1" fill="#14182e"/>
-   <rect x="159" y="8" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="160" y="8" width="1" height="1" fill="#686f99"/>
-   <rect x="161" y="8" width="1" height="1" fill="#14182e"/>
-   <rect x="162" y="8" width="1" height="1" fill="#2c354d"/>
-   <rect x="163" y="8" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="164" y="8" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="165" y="8" width="1" height="1" fill="#2c354d"/>
-   <rect x="166" y="8" width="1" height="1" fill="#2c354d"/>
-   <rect x="167" y="8" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="168" y="8" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="169" y="8" width="1" height="1" fill="#2c354d"/>
-   <rect x="170" y="8" width="1" height="1" fill="#14182e"/>
-   <rect x="171" y="8" width="1" height="1" fill="#686f99"/>
-   <rect x="172" y="8" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="173" y="8" width="1" height="1" fill="#14182e"/>
-   <rect x="158" y="9" width="1" height="1" fill="#14182e"/>
-   <rect x="159" y="9" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="160" y="9" width="1" height="1" fill="#686f99"/>
-   <rect x="161" y="9" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="162" y="9" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="163" y="9" width="1" height="1" fill="#2c354d"/>
-   <rect x="164" y="9" width="1" height="1" fill="#2c354d"/>
-   <rect x="165" y="9" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="9" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="167" y="9" width="1" height="1" fill="#2c354d"/>
-   <rect x="168" y="9" width="1" height="1" fill="#2c354d"/>
-   <rect x="169" y="9" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="170" y="9" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="171" y="9" width="1" height="1" fill="#686f99"/>
-   <rect x="172" y="9" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="173" y="9" width="1" height="1" fill="#14182e"/>
-   <rect x="158" y="10" width="1" height="1" fill="#14182e"/>
-   <rect x="159" y="10" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="160" y="10" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="161" y="10" width="1" height="1" fill="#2c354d"/>
-   <g fill="#14182e">
-    <rect x="162" y="10" width="1" height="1"/>
-    <rect x="163" y="10" width="1" height="1"/>
-    <rect x="164" y="10" width="1" height="1"/>
-   </g>
-   <rect x="165" y="10" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="10" width="1" height="1" fill="#686f99"/>
-   <g fill="#14182e">
-    <rect x="167" y="10" width="1" height="1"/>
-    <rect x="168" y="10" width="1" height="1"/>
-    <rect x="169" y="10" width="1" height="1"/>
-   </g>
-   <rect x="170" y="10" width="1" height="1" fill="#2c354d"/>
-   <rect x="171" y="10" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="172" y="10" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="173" y="10" width="1" height="1" fill="#14182e"/>
-   <rect x="158" y="11" width="1" height="1" fill="#686f99"/>
-   <rect x="159" y="11" width="1" height="1" fill="#14182e"/>
-   <rect x="160" y="11" width="1" height="1" fill="#2c354d"/>
-   <rect x="161" y="11" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="162" y="11" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="163" y="11" width="1" height="1" fill="#2c354d"/>
-   <rect x="164" y="11" width="1" height="1" fill="#2c354d"/>
-   <rect x="165" y="11" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="11" width="1" height="1" fill="#686f99"/>
-   <rect x="167" y="11" width="1" height="1" fill="#14182e"/>
-   <rect x="168" y="11" width="1" height="1" fill="#2c354d"/>
-   <rect x="169" y="11" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="170" y="11" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="171" y="11" width="1" height="1" fill="#2c354d"/>
-   <rect x="172" y="11" width="1" height="1" fill="#14182e"/>
-   <rect x="173" y="11" width="1" height="1" fill="#686f99"/>
-   <rect x="160" y="12" width="1" height="1" fill="#686f99"/>
-   <rect x="161" y="12" width="1" height="1" fill="#14182e"/>
-   <rect x="162" y="12" width="1" height="1" fill="#2c354d"/>
-   <rect x="163" y="12" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="164" y="12" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="165" y="12" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="12" width="1" height="1" fill="#686f99"/>
-   <rect x="167" y="12" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="168" y="12" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="169" y="12" width="1" height="1" fill="#2c354d"/>
-   <rect x="170" y="12" width="1" height="1" fill="#14182e"/>
-   <rect x="171" y="12" width="1" height="1" fill="#686f99"/>
-   <rect x="162" y="13" width="1" height="1" fill="#686f99"/>
-   <rect x="163" y="13" width="1" height="1" fill="#14182e"/>
-   <rect x="164" y="13" width="1" height="1" fill="#2c354d"/>
-   <rect x="165" y="13" width="1" height="1" fill="#f5ffe8"/>
-   <rect x="166" y="13" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="167" y="13" width="1" height="1" fill="#2c354d"/>
-   <rect x="168" y="13" width="1" height="1" fill="#14182e"/>
-   <rect x="169" y="13" width="1" height="1" fill="#686f99"/>
-   <rect x="164" y="14" width="1" height="1" fill="#686f99"/>
-   <rect x="165" y="14" width="1" height="1" fill="#14182e"/>
-   <rect x="166" y="14" width="1" height="1" fill="#14182e"/>
-   <rect x="167" y="14" width="1" height="1" fill="#686f99"/>
-  </g>
-  <g transform="translate(18)">
-   <g fill="#a3a7c2">
-    <rect x="146" width="1" height="1"/>
-    <rect x="147" width="1" height="1"/>
-    <rect x="148" width="1" height="1"/>
-    <rect x="149" width="1" height="1"/>
-    <rect x="144" y="1" width="1" height="1"/>
-   </g>
-   <rect x="145" y="1" width="1" height="1" fill="#686f99"/>
-   <g fill="#14182e">
-    <rect x="146" y="1" width="1" height="1"/>
-    <rect x="147" y="1" width="1" height="1"/>
-    <rect x="148" y="1" width="1" height="1"/>
-    <rect x="149" y="1" width="1" height="1"/>
-   </g>
-   <rect x="150" y="1" width="1" height="1" fill="#686f99"/>
-   <rect x="151" y="1" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="143" y="2" width="1" height="1" fill="#686f99"/>
-   <rect x="144" y="2" width="1" height="1" fill="#14182e"/>
-   <rect x="145" y="2" width="1" height="1" fill="#404973"/>
-   <rect x="146" y="2" width="1" height="1" fill="#686f99"/>
-   <rect x="147" y="2" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="148" y="2" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="149" y="2" width="1" height="1" fill="#686f99"/>
-   <rect x="150" y="2" width="1" height="1" fill="#404973"/>
-   <rect x="151" y="2" width="1" height="1" fill="#14182e"/>
-   <rect x="152" y="2" width="1" height="1" fill="#686f99"/>
-   <rect x="142" y="3" width="1" height="1" fill="#686f99"/>
-   <rect x="143" y="3" width="1" height="1" fill="#14182e"/>
-   <rect x="144" y="3" width="1" height="1" fill="#686f99"/>
-   <rect x="145" y="3" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="150" y="3" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="151" y="3" width="1" height="1" fill="#686f99"/>
-   <rect x="152" y="3" width="1" height="1" fill="#14182e"/>
-   <rect x="153" y="3" width="1" height="1" fill="#686f99"/>
-   <rect x="141" y="4" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="142" y="4" width="1" height="1" fill="#14182e"/>
-   <g fill="#686f99">
-    <rect x="143" y="4" width="1" height="1"/>
-    <rect x="146" y="4" width="1" height="1"/>
-    <rect x="149" y="4" width="1" height="1"/>
-    <rect x="152" y="4" width="1" height="1"/>
-   </g>
-   <rect x="153" y="4" width="1" height="1" fill="#14182e"/>
-   <rect x="154" y="4" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="141" y="5" width="1" height="1" fill="#686f99"/>
-   <rect x="142" y="5" width="1" height="1" fill="#404973"/>
-   <rect x="143" y="5" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="145" y="5" width="1" height="1" fill="#686f99"/>
-   <rect x="146" y="5" width="1" height="1" fill="#2c354d"/>
-   <rect x="147" y="5" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="148" y="5" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="149" y="5" width="1" height="1" fill="#2c354d"/>
-   <rect x="150" y="5" width="1" height="1" fill="#686f99"/>
-   <rect x="152" y="5" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="153" y="5" width="1" height="1" fill="#404973"/>
-   <rect x="154" y="5" width="1" height="1" fill="#686f99"/>
-   <rect x="140" y="6" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="141" y="6" width="1" height="1" fill="#14182e"/>
-   <rect x="142" y="6" width="1" height="1" fill="#686f99"/>
-   <rect x="144" y="6" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="145" y="6" width="1" height="1" fill="#2c354d"/>
-   <g fill="#14182e">
-    <rect x="146" y="6" width="1" height="1"/>
-    <rect x="147" y="6" width="1" height="1"/>
-    <rect x="148" y="6" width="1" height="1"/>
-    <rect x="149" y="6" width="1" height="1"/>
-   </g>
-   <rect x="150" y="6" width="1" height="1" fill="#2c354d"/>
-   <rect x="151" y="6" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="153" y="6" width="1" height="1" fill="#686f99"/>
-   <rect x="154" y="6" width="1" height="1" fill="#14182e"/>
-   <rect x="155" y="6" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="140" y="7" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="141" y="7" width="1" height="1" fill="#14182e"/>
-   <rect x="142" y="7" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="144" y="7" width="1" height="1" fill="#686f99"/>
-   <g fill="#14182e">
-    <rect x="145" y="7" width="1" height="1"/>
-    <rect x="146" y="7" width="1" height="1"/>
-    <rect x="147" y="7" width="1" height="1"/>
-    <rect x="148" y="7" width="1" height="1"/>
-    <rect x="149" y="7" width="1" height="1"/>
-    <rect x="150" y="7" width="1" height="1"/>
-   </g>
-   <rect x="151" y="7" width="1" height="1" fill="#686f99"/>
-   <rect x="153" y="7" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="154" y="7" width="1" height="1" fill="#14182e"/>
-   <rect x="155" y="7" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="140" y="8" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="141" y="8" width="1" height="1" fill="#14182e"/>
-   <rect x="142" y="8" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="144" y="8" width="1" height="1" fill="#686f99"/>
-   <rect x="145" y="8" width="1" height="1" fill="#2c354d"/>
-   <g fill="#14182e">
-    <rect x="146" y="8" width="1" height="1"/>
-    <rect x="147" y="8" width="1" height="1"/>
-    <rect x="148" y="8" width="1" height="1"/>
-    <rect x="149" y="8" width="1" height="1"/>
-   </g>
-   <rect x="150" y="8" width="1" height="1" fill="#2c354d"/>
-   <rect x="151" y="8" width="1" height="1" fill="#686f99"/>
-   <rect x="153" y="8" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="154" y="8" width="1" height="1" fill="#14182e"/>
-   <rect x="155" y="8" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="140" y="9" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="141" y="9" width="1" height="1" fill="#14182e"/>
-   <rect x="142" y="9" width="1" height="1" fill="#686f99"/>
-   <rect x="144" y="9" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="145" y="9" width="1" height="1" fill="#686f99"/>
-   <rect x="146" y="9" width="1" height="1" fill="#2c354d"/>
-   <rect x="147" y="9" width="1" height="1" fill="#14182e"/>
-   <rect x="148" y="9" width="1" height="1" fill="#14182e"/>
-   <rect x="149" y="9" width="1" height="1" fill="#2c354d"/>
-   <rect x="150" y="9" width="1" height="1" fill="#686f99"/>
-   <rect x="151" y="9" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="153" y="9" width="1" height="1" fill="#686f99"/>
-   <rect x="154" y="9" width="1" height="1" fill="#14182e"/>
-   <rect x="155" y="9" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="141" y="10" width="1" height="1" fill="#686f99"/>
-   <rect x="142" y="10" width="1" height="1" fill="#404973"/>
-   <rect x="143" y="10" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="144" y="10" width="1" height="1" fill="#2c354d"/>
-   <rect x="145" y="10" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="146" y="10" width="1" height="1" fill="#404973"/>
-   <rect x="147" y="10" width="1" height="1" fill="#14182e"/>
-   <rect x="148" y="10" width="1" height="1" fill="#14182e"/>
-   <rect x="149" y="10" width="1" height="1" fill="#404973"/>
-   <rect x="150" y="10" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="152" y="10" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="153" y="10" width="1" height="1" fill="#404973"/>
-   <rect x="154" y="10" width="1" height="1" fill="#686f99"/>
-   <rect x="141" y="11" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="142" y="11" width="1" height="1" fill="#14182e"/>
-   <rect x="143" y="11" width="1" height="1" fill="#686f99"/>
-   <rect x="145" y="11" width="1" height="1" fill="#2c354d"/>
-   <rect x="146" y="11" width="1" height="1" fill="#2c354d"/>
-   <rect x="147" y="11" width="1" height="1" fill="#14182e"/>
-   <rect x="148" y="11" width="1" height="1" fill="#14182e"/>
-   <rect x="149" y="11" width="1" height="1" fill="#404973"/>
-   <rect x="152" y="11" width="1" height="1" fill="#686f99"/>
-   <rect x="153" y="11" width="1" height="1" fill="#14182e"/>
-   <rect x="154" y="11" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="142" y="12" width="1" height="1" fill="#686f99"/>
-   <rect x="143" y="12" width="1" height="1" fill="#14182e"/>
-   <rect x="144" y="12" width="1" height="1" fill="#686f99"/>
-   <rect x="145" y="12" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="146" y="12" width="1" height="1" fill="#404973"/>
-   <rect x="147" y="12" width="1" height="1" fill="#14182e"/>
-   <rect x="148" y="12" width="1" height="1" fill="#14182e"/>
-   <rect x="149" y="12" width="1" height="1" fill="#404973"/>
-   <rect x="150" y="12" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="151" y="12" width="1" height="1" fill="#686f99"/>
-   <rect x="152" y="12" width="1" height="1" fill="#14182e"/>
-   <rect x="153" y="12" width="1" height="1" fill="#686f99"/>
-   <rect x="143" y="13" width="1" height="1" fill="#686f99"/>
-   <rect x="144" y="13" width="1" height="1" fill="#14182e"/>
-   <rect x="145" y="13" width="1" height="1" fill="#404973"/>
-   <rect x="146" y="13" width="1" height="1" fill="#2c354d"/>
-   <rect x="147" y="13" width="1" height="1" fill="#14182e"/>
-   <rect x="148" y="13" width="1" height="1" fill="#14182e"/>
-   <rect x="149" y="13" width="1" height="1" fill="#2c354d"/>
-   <rect x="150" y="13" width="1" height="1" fill="#404973"/>
-   <rect x="151" y="13" width="1" height="1" fill="#14182e"/>
-   <rect x="152" y="13" width="1" height="1" fill="#686f99"/>
-   <rect x="144" y="14" width="1" height="1" fill="#a3a7c2"/>
-   <rect x="145" y="14" width="1" height="1" fill="#686f99"/>
-   <g fill="#14182e">
-    <rect x="146" y="14" width="1" height="1"/>
-    <rect x="147" y="14" width="1" height="1"/>
-    <rect x="148" y="14" width="1" height="1"/>
-    <rect x="149" y="14" width="1" height="1"/>
-   </g>
-   <rect x="150" y="14" width="1" height="1" fill="#686f99"/>
-   <g fill="#a3a7c2">
-    <rect x="151" y="14" width="1" height="1"/>
-    <rect x="146" y="15" width="1" height="1"/>
-    <rect x="147" y="15" width="1" height="1"/>
-    <rect x="148" y="15" width="1" height="1"/>
-    <rect x="149" y="15" width="1" height="1"/>
-   </g>
-  </g>
- </g>
-</svg>
-`;
+  const State = {
+    lastImage: null,
+    lastBaseName: "image",
+    baseSVG: "", // raw pixel-art SVG (with optional background), no credit
+    baseSize: { w: 0, h: 0 }, // parsed width/height from baseSVG
+  };
 
-let rawCombinedSVG = "";
-let filename = "";
-let lastImage = null;
-let lastFileName = null;
+  // -----------------------------
+  // 2) Utils
+  // -----------------------------
+  const Utils = {
+    clamp(n, lo, hi) {
+      return Math.max(lo, Math.min(hi, n));
+    },
+    debounce(fn, ms = 60) {
+      let t;
+      return (...a) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...a), ms);
+      };
+    },
+    sanitizeName(s) {
+      return String(s || "image")
+        .replace(/\s+/g, "_")
+        .replace(/[^\w\-.]+/g, "");
+    },
+    buildExportFilename() {
+      const bgColor = el.bgTransparent.checked ? "transparent" : el.bgColor.value;
+      const alphaHex = Math.round(parseFloat(el.bgAlpha.value || "1") * 255)
+        .toString(16)
+        .padStart(2, "0");
+      const bgTag = bgColor === "transparent" ? "transparent" : bgColor + alphaHex;
+      const opacity = Utils.clamp(parseInt(el.opacity.value || "100", 10), 0, 100);
+      const scale = parseFloat(el.scale.value || "1"); // keep fractional
+      const simplify = el.simplify.checked ? "_S" : "";
+      const date = new Date().toLocaleDateString(undefined, { month: "2-digit", day: "2-digit", year: "numeric" }).replace(/\//g, "-");
+      const base = State.lastBaseName;
+      return `${base}_B${bgTag}_O${opacity}_X${scale}${simplify}_D${date}.svg`;
+    },
+    parseSvgSize(svgString) {
+      // Try DOM first (most robust)
+      try {
+        const doc = new DOMParser().parseFromString(svgString, "image/svg+xml");
+        const svg = doc.documentElement;
+        let w = parseFloat((svg.getAttribute("width") || "").replace("px", ""));
+        let h = parseFloat((svg.getAttribute("height") || "").replace("px", ""));
+        // Fallback to viewBox if width/height missing
+        if (!(w > 0) || !(h > 0)) {
+          const vb = (svg.getAttribute("viewBox") || "").trim().split(/\s+/).map(Number);
+          if (vb.length === 4 && vb.every((n) => Number.isFinite(n))) {
+            w = vb[2];
+            h = vb[3];
+          }
+        }
+        if (w > 0 && h > 0) return { w, h };
+      } catch (_) {
+        /* ignore and fall through to regex */
+      }
 
-// === DOM ELEMENTS CACHE ===
-const el = {
-  imgLoader: document.getElementById("imgLoader"),
-  svgPreview: document.getElementById("svgPreview"),
-  bgColor: document.getElementById("bgColor"),
-  bgTransparent: document.getElementById("bgTransparent"),
-  bgAlpha: document.getElementById("bgAlpha"),
-  fileName: document.getElementById("fileName"),
-  opacity: document.getElementById("opacity"),
-  scale: document.getElementById("scale"),
-  simplify: document.getElementById("simplify"),
-  downloadRaw: document.getElementById("downloadRaw"),
-};
+      // Regex fallback (order-agnostic)
+      const wm = svgString.match(/width="(\d+(?:\.\d+)?)(?:px)?"/i);
+      const hm = svgString.match(/height="(\d+(?:\.\d+)?)(?:px)?"/i);
+      if (wm && hm) return { w: +wm[1], h: +hm[1] };
 
-// === HELPERS ===
-const rgbaString = (r, g, b, a) => `rgba(${r},${g},${b},${a})`;
+      const vb = svgString.match(/viewBox="(?:[-\d.]+\s+){2}([-\d.]+)\s+([-\d.]+)"/i);
+      if (vb) return { w: +vb[1], h: +vb[2] };
 
-function pixelsToSVG(data, width, height, scale, opacity, simplify = false) {
-  const seen = new Map();
-  const rects = [];
+      return { w: 0, h: 0 };
+    },
+  };
 
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const i = (y * width + x) * 4;
-      const [r, g, b, a] = data.slice(i, i + 4);
-      if (a === 0) continue;
+  // -----------------------------
+  // 3) SVG Builder (paths in unit grid → clean fractional scaling)
+  // -----------------------------
+  const SVGBuilder = {
+    /**
+     * Build pixel-art SVG using paths in unit-pixel coordinates.
+     * - When simplify=true, emits one <path> per 8-connected color component (from edge stitching).
+     * - When simplify=false, emits one multi-subpath <path> containing 1×1 squares for all pixels.
+     * - The SVG uses viewBox in unit grid and scales by width/height attributes, so any fractional
+     *   output size is crisp (vector).
+     */
+    pixelsToSVG({ data, width, height, scale, opacity, simplify, bg }) {
+      // fractional scale is allowed
+      scale = Math.max(0.25, Number(scale) || 1);
+      opacity = Math.max(0, Math.min(100, Number(opacity) || 100));
 
-      const finalAlpha = ((a / 255) * (opacity / 100)).toFixed(2);
-      const hex = `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
-      const key = simplify ? `${hex}-${finalAlpha}` : `${x},${y},${hex}-${finalAlpha}`;
+      const N = width * height;
+      const keyArr = new Array(N);
+      const hexArr = new Array(N);
+      const alArr = new Float32Array(N);
 
-      if (simplify && seen.has(key)) continue;
-      seen.set(key, true);
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const idx = y * width + x;
+          const i = idx * 4;
+          const r = data[i],
+            g = data[i + 1],
+            b = data[i + 2],
+            a = data[i + 3];
+          if (!a) {
+            keyArr[idx] = null;
+            continue;
+          }
+          const finalAlpha = (a / 255) * (opacity / 100);
+          if (finalAlpha <= 0) {
+            keyArr[idx] = null;
+            continue;
+          }
+          const hex = `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+          const al = +finalAlpha.toFixed(3);
+          keyArr[idx] = `${hex}|${al}`;
+          hexArr[idx] = hex;
+          alArr[idx] = al;
+        }
+      }
 
-      rects.push(`<rect x="${x * scale}" y="${y * scale}" width="${scale}" height="${scale}" fill="${hex}" fill-opacity="${finalAlpha}" shape-rendering="crispEdges" />`);
+      const out = [];
+
+      // Background (unit grid path)
+      if (!bg.transparent) {
+        const a = Math.max(0, Math.min(1, +bg.alpha || 0));
+        // Rect: (0,0)→(width,height) in unit grid
+        const d = `M0 0H${width}V${height}H0Z`;
+        out.push(`<path d="${d}" fill="${bg.color}" fill-opacity="${a.toFixed(3)}"/>`);
+      }
+
+      if (!simplify) {
+        // One <path> per color for cache/locality (reduces attribute churn).
+        const byColor = new Map(); // key -> array of pixel indices
+        for (let i = 0; i < N; i++) {
+          const key = keyArr[i];
+          if (!key) continue;
+          let arr = byColor.get(key);
+          if (!arr) byColor.set(key, (arr = []));
+          arr.push(i);
+        }
+
+        for (const [key, indices] of byColor.entries()) {
+          const [hex, alStr] = key.split("|");
+          const al = +alStr;
+          // Build a single path with multiple 1×1 subpaths
+          // Each pixel square in unit grid: Mx y h1 v1 h-1 z
+          let d = "";
+          for (const idx of indices) {
+            const x = idx % width;
+            const y = (idx - x) / width;
+            d += `M${x} ${y}h1v1h-1Z`;
+          }
+          out.push(`<path d="${d}" fill="${hex}" fill-opacity="${al}" shape-rendering="crispEdges"/>`);
+        }
+
+        return this._wrapSVG(out.join(""), width, height, scale);
+      }
+
+      // ---- Simplify path mode: reuse your 8-connected boundary stitch ----
+      // Build buckets by color to find 8-connected components quickly
+      const buckets = new Map(); // key -> Set of indices
+      for (let idx = 0; idx < N; idx++) {
+        const key = keyArr[idx];
+        if (!key) continue;
+        let set = buckets.get(key);
+        if (!set) buckets.set(key, (set = new Set()));
+        set.add(idx);
+      }
+
+      const neighbors8 = [
+        [-1, 0],
+        [1, 0],
+        [0, -1],
+        [0, 1],
+        [-1, -1],
+        [1, -1],
+        [-1, 1],
+        [1, 1],
+      ];
+
+      // For each color, emit one or more component paths (unit grid coords)
+      for (const [key, remaining] of buckets.entries()) {
+        while (remaining.size) {
+          // ---- Collect component via DFS (8-connected) ----
+          const start = remaining.values().next().value;
+          remaining.delete(start);
+          const comp = [];
+          const stack = [start];
+          while (stack.length) {
+            const idx = stack.pop();
+            comp.push(idx);
+            const x = idx % width,
+              y = (idx - x) / width;
+            for (const [dx, dy] of neighbors8) {
+              const nx = x + dx,
+                ny = y + dy;
+              if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+              const nIdx = ny * width + nx;
+              if (!remaining.has(nIdx)) continue;
+              remaining.delete(nIdx);
+              stack.push(nIdx);
+            }
+          }
+
+          // ---- Boundary stitch (cancel internal edges, keep outer) ----
+          const pixSet = new Set(
+            comp.map((i) => {
+              const x = i % width,
+                y = (i - x) / width;
+              return `${x},${y}`;
+            }),
+          );
+          const hasPix = (x, y) => pixSet.has(`${x},${y}`);
+
+          const edges = [];
+          const undirected = new Map();
+          const addE = (x1, y1, x2, y2) => {
+            const u = x1 < x2 || (x1 === x2 && y1 < y2) ? `${x1},${y1}|${x2},${y2}` : `${x2},${y2}|${x1},${y1}`;
+            undirected.set(u, (undirected.get(u) || 0) + 1);
+            edges.push([x1, y1, x2, y2]);
+          };
+
+          for (const i of comp) {
+            const px = i % width,
+              py = (i - px) / width;
+            if (!hasPix(px, py - 1)) addE(px, py, px + 1, py); // top
+            if (!hasPix(px + 1, py)) addE(px + 1, py, px + 1, py + 1); // right
+            if (!hasPix(px, py + 1)) addE(px + 1, py + 1, px, py + 1); // bottom
+            if (!hasPix(px - 1, py)) addE(px, py + 1, px, py); // left
+          }
+
+          const boundary = edges.filter(([x1, y1, x2, y2]) => {
+            const u = x1 < x2 || (x1 === x2 && y1 < y2) ? `${x1},${y1}|${x2},${y2}` : `${x2},${y2}|${x1},${y1}`;
+            return undirected.get(u) === 1;
+          });
+
+          // ---- Stitch edges into closed loops ----
+          const ptKey = (x, y) => `${x},${y}`;
+          const adj = new Map();
+          const eKey = (e) => `${e[0]},${e[1]}|${e[2]},${e[3]}`;
+
+          for (const e of boundary) {
+            const k = ptKey(e[0], e[1]);
+            let arr = adj.get(k);
+            if (!arr) adj.set(k, (arr = []));
+            arr.push(e);
+          }
+
+          const used = new Set();
+          const loops = [];
+          for (const e of boundary) {
+            if (used.has(eKey(e))) continue;
+            const loop = [];
+            let cur = e;
+            used.add(eKey(cur));
+            loop.push([cur[0], cur[1]]);
+            let cx = cur[2],
+              cy = cur[3];
+            while (true) {
+              loop.push([cx, cy]);
+              const outs = adj.get(ptKey(cx, cy)) || [];
+              let next = null;
+              for (const cand of outs) {
+                if (!used.has(eKey(cand))) {
+                  next = cand;
+                  break;
+                }
+              }
+              if (!next) break;
+              used.add(eKey(next));
+              cx = next[2];
+              cy = next[3];
+            }
+            // Ensure closure
+            const [sx, sy] = loop[0];
+            const [lx, ly] = loop[loop.length - 1];
+            if (sx !== lx || sy !== ly) loop.push([sx, sy]);
+            loops.push(loop);
+          }
+
+          // Emit a single <path> (unit grid coords) with evenodd fill
+          const [hex, alStr] = key.split("|");
+          const al = +alStr;
+          const d = loops
+            .map((path) => {
+              let s = "";
+              for (let i = 0; i < path.length; i++) {
+                const [x, y] = path[i];
+                s += i === 0 ? `M${x} ${y}` : `L${x} ${y}`;
+              }
+              return s + "Z";
+            })
+            .join("");
+          if (d) out.push(`<path d="${d}" fill="${hex}" fill-opacity="${al}" fill-rule="evenodd" shape-rendering="crispEdges"/>`);
+        }
+      }
+
+      return this._wrapSVG(out.join(""), width, height, scale);
+    },
+
+    _wrapSVG(inner, unitW, unitH, scale) {
+      // Scale purely via width/height against a unit viewBox
+      const outW = unitW * scale;
+      const outH = unitH * scale;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${unitW} ${unitH}" width="${outW}" height="${outH}" shape-rendering="crispEdges">${inner}</svg>`;
+    },
+  };
+
+  // -----------------------------
+  // 4) Preview & IO
+  // -----------------------------
+  const Preview = {
+    renderBase(svgString) {
+      State.baseSVG = svgString;
+      State.baseSize = Utils.parseSvgSize(svgString);
+
+      // Let SVG dictate its intrinsic size (no CSS stretching)
+      el.svgPreview.innerHTML = svgString || "";
+      el.svgPreview.style.background = "transparent";
+      el.svgPreview.style.opacity = "1";
+    },
+  };
+
+  const IO = {
+    async loadImageFile(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = URL.createObjectURL(file);
+      });
+    },
+    toCanvas(img) {
+      const c = document.createElement("canvas");
+      c.width = img.width;
+      c.height = img.height;
+      c.getContext("2d").drawImage(img, 0, 0);
+      return c;
+    },
+    download(filename, text, mime = "image/svg+xml") {
+      const blob = new Blob([text], { type: mime });
+      const a = Object.assign(document.createElement("a"), {
+        href: URL.createObjectURL(blob),
+        download: filename,
+      });
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    },
+    svgToPngBlob(svgString) {
+      return new Promise((resolve, reject) => {
+        const { w, h } = Utils.parseSvgSize(svgString);
+        if (!(w > 0) || !(h > 0)) return reject(new Error("Invalid SVG size."));
+        const W = Math.max(1, Math.round(w));
+        const H = Math.max(1, Math.round(h));
+
+        const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = W;
+          canvas.height = H;
+          const ctx = canvas.getContext("2d");
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(img, 0, 0, W, H);
+          canvas.toBlob((pngBlob) => {
+            URL.revokeObjectURL(url);
+            if (!pngBlob) return reject(new Error("PNG conversion failed."));
+            resolve(pngBlob);
+          }, "image/png");
+        };
+        img.onerror = (e) => reject(e);
+        img.src = url;
+      });
+    },
+
+    async copySvgAsPng(svgString) {
+      const pngBlob = await IO.svgToPngBlob(svgString);
+      const item = new ClipboardItem({ "image/png": pngBlob });
+      await navigator.clipboard.write([item]);
+    },
+  };
+
+  // -----------------------------
+  // 5) Core regenerate pipeline
+  // -----------------------------
+  const regenerate = () => {
+    if (!State.lastImage) return;
+
+    const scale = Math.max(0.25, parseFloat(el.scale.value || "1"));
+
+    // Reflect the cleaned-up value back to the input (UX clarity)
+    if (String(scale) !== el.scale.value) el.scale.value = String(scale);
+
+    const opacity = parseInt(el.opacity.value || "100", 10);
+    const simplify = !!el.simplify.checked;
+
+    const bg = {
+      transparent: !!el.bgTransparent.checked,
+      color: el.bgColor.value || "#000000",
+      alpha: Utils.clamp(parseFloat(el.bgAlpha.value || "1"), 0, 1),
+    };
+
+    const canvas = IO.toCanvas(State.lastImage);
+    const { data, width, height } = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
+
+    const baseSVG = SVGBuilder.pixelsToSVG({ data, width, height, scale, opacity, simplify, bg });
+    Preview.renderBase(baseSVG);
+  };
+
+  const debouncedRegen = Utils.debounce(regenerate, 50);
+
+  // -----------------------------
+  // 6) Events
+  // -----------------------------
+  el.imgLoader.addEventListener("change", async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const name = file.name;
+    State.lastBaseName = Utils.sanitizeName(name.replace(/\.\w+$/, ""));
+    const img = await IO.loadImageFile(file);
+    State.lastImage = img;
+    regenerate();
+    el.fileName.value = State.lastBaseName;
+  });
+
+  // Click preview → download configured SVG (base)
+  el.svgPreview.addEventListener("click", () => {
+    if (!State.baseSVG) return;
+    const finalNameBase = Utils.sanitizeName(el.fileName.value || State.lastBaseName) || "image";
+    const fileName = Utils.buildExportFilename().replace(/^image/, finalNameBase);
+    IO.download(fileName, State.baseSVG, "image/svg+xml");
+  });
+
+  // "Download Raw SVG" → base SVG
+  el.downloadRaw?.addEventListener("click", () => {
+    if (!State.baseSVG) return;
+    const base = Utils.sanitizeName(el.fileName.value || State.lastBaseName) || "image";
+    IO.download(`${base}.svg`, State.baseSVG, "image/svg+xml");
+  });
+
+  // Copy to Clipboard (PNG)
+  el.copyPngBtn?.addEventListener("click", async () => {
+    if (!State.baseSVG) return;
+    try {
+      await IO.copySvgAsPng(State.baseSVG);
+    } catch (e) {
+      console.error(e);
     }
-  }
-
-  const svgW = width * scale,
-    svgH = height * scale;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" height="${svgH}" width="${svgW}" viewBox="0 0 ${svgW} ${svgH}">${rects.join("\n")}</svg>`;
-}
-
-function extractSVGContent(svg) {
-  const match = svg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i);
-  return match ? match[1].trim() : "";
-}
-
-function combineSVGs(main, credit) {
-  const mainSize = main.match(/height="(\d+)"\s+width="(\d+)"/);
-  const creditSize = credit.match(/height="(\d+)"\s+width="(\d+)"/);
-  if (!mainSize || !creditSize) return { output: "", totalW: 0, totalH: 0 };
-
-  const [mainH, mainW] = [+mainSize[1], +mainSize[2]];
-  const [creditH, creditW] = [+creditSize[1], +creditSize[2]];
-
-  const totalW = Math.max(mainW, creditW);
-  const totalH = mainH + creditH;
-
-  const mainX = mainW < creditW ? Math.ceil((creditW - mainW) / 2) : 0;
-  const creditX = mainW >= creditW ? mainW - creditW : 0;
-
-  const output = `
-<svg xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     viewBox="0 0 ${totalW} ${totalH}"
-     width="${totalW}"
-     height="${totalH}"
-     shape-rendering="crispEdges">
-  <g transform="translate(${mainX}, 0)">
-    ${extractSVGContent(main)}
-  </g>
-  <g transform="translate(${creditX}, ${mainH})">
-    ${extractSVGContent(credit)}
-  </g>
-</svg>`;
-
-  return {
-    output,
-    mainH,
-    mainW,
-    creditH,
-    creditW,
-    totalW,
-    totalH,
-  };
-}
-
-function updatePreview() {
-  el.svgPreview.style.backgroundColor = el.bgTransparent.checked ? "transparent" : el.bgColor.value;
-  el.svgPreview.style.opacity = parseFloat(el.bgAlpha.value);
-}
-
-function getExportFilename() {
-  const bgColor = el.bgTransparent.checked ? "transparent" : el.bgColor.value;
-  const alphaHex = Math.round(parseFloat(el.bgAlpha.value) * 255)
-    .toString(16)
-    .padStart(2, "0");
-  const bgTag = bgColor === "transparent" ? "transparent" : bgColor + alphaHex;
-  const opacity = parseFloat(el.opacity.value);
-  const scale = parseFloat(el.scale.value);
-  const simplify = el.simplify.checked ? "_S" : "";
-  const date = new Date()
-    .toLocaleDateString(undefined, {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-    })
-    .replace(/\//g, "-");
-  const name = lastFileName?.replace(/\.\w+$/, "") || "image";
-
-  return `${name}_B${bgTag}_O${opacity}_X${scale}${simplify}_D${date}.svg`;
-}
-
-function regenerateSVG() {
-  if (!lastImage) return;
-  const scale = parseFloat(el.scale.value) || 1;
-  const opacity = parseInt(el.opacity.value) || 100;
-  const simplify = el.simplify.checked;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = lastImage.width;
-  canvas.height = lastImage.height;
-  canvas.getContext("2d").drawImage(lastImage, 0, 0);
-
-  const borderBuffer = parseInt(window.getComputedStyle(el.svgPreview).getPropertyValue("border-top-width")) * 2;
-  const data = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
-  const pixelSVG = pixelsToSVG(data, canvas.width, canvas.height, scale, opacity, simplify);
-  rawCombinedSVG = combineSVGs(pixelSVG, itsnyxthoSVG);
-  el.svgPreview.innerHTML = rawCombinedSVG.output;
-
-  el.svgPreview.style.width = `${(rawCombinedSVG.totalW + borderBuffer).toFixed(2)}px`;
-  el.svgPreview.style.height = `${(rawCombinedSVG.totalH + borderBuffer).toFixed(2)}px`;
-
-  updatePreview();
-}
-
-// === EVENTS ===
-el.imgLoader.addEventListener("change", async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  lastFileName = file.name;
-  lastFileName = lastFileName.substring(0, lastFileName.lastIndexOf(".") || lastFileName.length);
-  const img = new Image();
-  img.src = URL.createObjectURL(file);
-  await img.decode();
-  lastImage = img;
-
-  regenerateSVG();
-  el.fileName.value = getExportFilename().substring(0, lastFileName.lastIndexOf(".") || lastFileName.length);
-});
-
-el.svgPreview.addEventListener("click", () => {
-  const blob = new Blob([rawCombinedSVG.output], { type: "image/svg+xml" });
-  const a = Object.assign(document.createElement("a"), {
-    href: URL.createObjectURL(blob),
-    download: getExportFilename(),
   });
-  a.click();
-});
 
-el.downloadRaw.addEventListener("click", () => {
-  const blob = new Blob([rawCombinedSVG.output], { type: "image/svg+xml" });
-  const a = Object.assign(document.createElement("a"), {
-    href: URL.createObjectURL(blob),
-    download: lastFileName + `.svg` || "download.svg",
+  // Download PNG
+  el.downloadPngBtn?.addEventListener("click", async () => {
+    if (!State.baseSVG) return;
+    try {
+      const pngBlob = await IO.svgToPngBlob(State.baseSVG);
+      const a = document.createElement("a");
+      const base = Utils.sanitizeName(el.fileName.value || State.lastBaseName) || "image";
+      a.href = URL.createObjectURL(pngBlob);
+      a.download = `${base}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (e) {
+      console.error(e);
+    }
   });
-  a.click();
-});
 
-// Auto-regenerate on input changes
-["bgColor", "bgAlpha", "bgTransparent", "opacity", "scale", "simplify"].forEach((id) => el[id].addEventListener("change", regenerateSVG));
+  // Live updates
+  ["bgColor", "bgAlpha", "bgTransparent", "opacity", "scale", "simplify"].forEach((id) => {
+    el[id]?.addEventListener("input", debouncedRegen);
+    el[id]?.addEventListener("change", debouncedRegen);
+  });
 
-function copySvgToClipboard(svgElement) {
-  const svgData = new XMLSerializer().serializeToString(svgElement);
-  const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-
-  const img = new Image();
-  img.onload = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-
-    canvas.toBlob((blob) => {
-      const item = new ClipboardItem({ "image/png": blob });
-      navigator.clipboard.write([item]);
-      URL.revokeObjectURL(url);
-    }, "image/png");
+  // -----------------------------
+  // 7) Expose safe globals for inline usage / debugging
+  // -----------------------------
+  window.PAS = { el, State, regenerate };
+  // Back-compat for any inline onclick="copySvgToClipboard(...)"
+  window.copySvgToClipboard = (/* optional svgElement */) => {
+    if (!State.baseSVG) return;
+    IO.copySvgAsPng(State.baseSVG).catch(() => {});
   };
-  img.src = url;
-}
+})();

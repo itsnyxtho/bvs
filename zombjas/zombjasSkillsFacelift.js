@@ -3,11 +3,12 @@
 // @name         BvS Zombjas Unified Skills Table
 // @namespace    bvs
 // @version      2.2.0
-// @description  Unified skills table w/ reused radio buttons, maxed indicators, sorting, hidden inputs preserved, and styled buy button in BvS Zombjas Skills page form.
+// @description  Unified skills table w/ radio buttons, maxed indicators, sorting, hidden inputs preserved, and action buttons on **BvS Zombjas Skills** page.
 // @author       itsnyxtho
-// @icon        https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
+// @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
 // @include      http*://*animecubed*/billy/bvs/zombjaskills.html
 // @grant        none
+// @disclaimer   These scripts are provided 'as is' and without warranty of any kind. Use of these scripts is at your own risk and discretion.
 // ==/UserScript==
 
 (function () {
@@ -24,7 +25,7 @@
       color: #fff;
       border-collapse: collapse;
       width: 100%;
-      font-family: monospace;
+      font-family: 'Fira Code', monospace;
       font-size: 10px;
       margin-top: 10px;
     }
@@ -39,7 +40,7 @@
       user-select: none;
       white-space: nowrap;
     }
-    .bvs-skill-table td.name   { text-align: right; font-weight: bold; white-space: nowrap; }
+    .bvs-skill-table td.name   { text-align: right; font-weight: 500; white-space: nowrap; }
     .bvs-skill-table td.level  { text-align: center; }
     .bvs-skill-table td.desc   { text-align: left; }
     .bvs-skill-table td.cost   { text-align: right; }
@@ -57,30 +58,43 @@
     .bvs-sort-asc::after  { content: " ▲"; }
     .bvs-sort-desc::after { content: " ▼"; }
 
-    .bvs-toggle-btn {
-      background: #222;
+    form[name="bskills"] > button {
+      height: 28px;
+      padding: 4px 12px;
+      margin-top: 6px;
       color: white;
-      border: 1px solid #888;
-      padding: 3px 8px;
-      font-size: 11px;
-      font-family: monospace;
+      font-family: 'Fira Code', monospace;
+      font-weight: 500;
+      font-size: 10px;
       cursor: pointer;
-      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      justify-items: center;
     }
 
     #bvs-buy-skill-btn {
       float: right;
       background-color: #a00;
-      color: white;
       border: 1px solid #900;
-      padding: 4px 12px;
-      margin-top: 6px;
-      font-weight: bold;
-      font-family: monospace;
-      cursor: pointer;
+    }
+
+    #bvs-zrewards-btn {
+      background-color: #075;
+      border: 1px solid #064;
+      margin: 6px auto 0 auto;
+    }
+
+    #bvs-return-btn {
+      float: left;
+      background-color: #05a;
+      border: 1px solid #049;
     }
   `;
   document.head.appendChild(style);
+
+  const firaCodeFont = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">`;
+  document.head.innerHTML += firaCodeFont;
 
   const td = [...document.querySelectorAll("font")].find((f) => f?.textContent?.trim() === "Your Skills:")?.closest("td");
   const form = document.querySelector('form[name="bskills"]');
@@ -126,7 +140,6 @@
     const isMax = level > 4;
     const cost = isMax ? "Maxed!" : costText;
     const selectContent = isMax ? "✔✔" : "";
-    console.log(line, isMax, cost, selectContent);
     skillRows.push({
       name,
       level,
@@ -195,27 +208,42 @@
 
   renderRows(skillRows);
 
-  const toggleBtn = document.createElement("button");
-  toggleBtn.textContent = "Hide Skill Table";
-  toggleBtn.className = "bvs-toggle-btn";
-  toggleBtn.type = "button";
-  toggleBtn.addEventListener("click", () => {
-    const show = table.style.display === "none";
-    table.style.display = show ? "" : "none";
-    toggleBtn.textContent = show ? "Hide Skill Table" : "Show Skill Table";
+  const returnBtn = document.createElement("button");
+  returnBtn.id = "bvs-return-btn";
+  returnBtn.textContent = "<|| Zombjas";
+  returnBtn.type = "button";
+  returnBtn.addEventListener("click", () => {
+    form.action = "/billy/bvs/zombjas.html";
+    form.submit();
+  });
+
+  const zRewardsBtn = document.createElement("button");
+  zRewardsBtn.id = "bvs-zrewards-btn";
+  zRewardsBtn.textContent = "Z Rewards";
+  zRewardsBtn.type = "button";
+  zRewardsBtn.addEventListener("click", () => {
+    form.action = "/billy/bvs/zombjarewards.html";
+    form.submit();
   });
 
   const buyBtn = document.createElement("button");
   buyBtn.id = "bvs-buy-skill-btn";
-  buyBtn.textContent = "Buy Skill >";
+  buyBtn.textContent = "Buy Skill ||>";
   buyBtn.type = "submit";
 
   // === Clear form and rebuild with hidden fields + new layout
   form.innerHTML = "";
   hiddenInputs.forEach((input) => form.appendChild(input));
-  form.appendChild(toggleBtn);
   form.appendChild(table);
   form.appendChild(buyBtn);
+  form.appendChild(returnBtn);
+  form.appendChild(zRewardsBtn);
+
+  //  Delete "ref" form
+  const refForm = document.querySelector('form[name="ref"]');
+  if (refForm) {
+    refForm.remove();
+  }
 
   // Sort
   let currentSort = { key: "name", dir: "asc" };
