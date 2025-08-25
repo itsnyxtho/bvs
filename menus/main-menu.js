@@ -6,11 +6,15 @@
 // @description  Combines and styles BvS minimenu into grouped, collapsible, persistent buttons with hide support per section and screen
 // @include      http*://*animecubed*/billy/bvs/*
 // @exclude      http*://*animecubed*/billy/bvs/zombjasonar.html
+// @exclude      http*://*animecubed*/billy/bvs/loop.html
 // @icon         https://github.com/itsnyxtho/bvs/blob/main/other/images/anime_cubed-icon.png?raw=true
 // @grant        none
 // ==/UserScript==
 
 (function () {
+  const menuTables = [...document.querySelectorAll(".minimenu, .minimenub")];
+  if (menuTables.length === 0) return;
+
   const removeElement = (selector) => {
     const element = document.querySelector(selector);
     if (element) {
@@ -448,9 +452,6 @@
     topContainer.style.height = "100%";
     topContainer.style.width = "100%";
   }
-
-  const menuTables = [...document.querySelectorAll(".minimenu, .minimenub")];
-  if (menuTables.length === 0) return;
 
   // -STR- Styling Helper Functions -----
   function getSectionBg(section) {
